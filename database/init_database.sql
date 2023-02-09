@@ -1,3 +1,9 @@
+PRAGMA writable_schema = 1;
+delete from sqlite_master where type in ('table', 'index', 'trigger');
+PRAGMA writable_schema = 0;
+VACUUM;
+PRAGMA INTEGRITY_CHECK;
+
 CREATE TABLE IF NOT EXISTS person (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   nickname VARCHAR(20) NOT NULL,
