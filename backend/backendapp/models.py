@@ -20,11 +20,6 @@ class Comment(models.Model):
     description = models.CharField(max_length = 255)
     rating = models.SmallIntegerField()
     id_owner =  models.ForeignKey(Person, on_delete=models.CASCADE)
-    id_roser = models.ForeignKey(Person, on_delete=models.CASCADE)
-
-class Plant_reservation(models.Model):
-    id_plant = models.ManyToManyField(id, through= 'Plant')
-    id_reservation = models.ManyToManyField(id, through= 'Reservation')
 
 class Reservation(models.Model):
     id = models.AutoField(primary_key=True)
@@ -40,3 +35,8 @@ class Reservation(models.Model):
     description = models.CharField(max_length = 2000)
     id_roser = models.ForeignKey(Person, on_delete=models.CASCADE)
     creation_date = models.CharField(max_length = 255)
+
+
+class Plant_reservation(models.Model):
+    id_plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    id_reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)

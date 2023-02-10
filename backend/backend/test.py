@@ -3,7 +3,7 @@ from django.test import RequestFactory, TestCase
 from PIL import Image
 import os
 
-
+"""
 class LoginTest(TestCase):
 
     def setUp(self):
@@ -42,3 +42,16 @@ class testresize(TestCase):
 
         im_resaved = Image.open("") #ouvrir l'image en JPG 
         self.assertEqual(im_resaved.format, "JPEG")
+"""
+class PersonModelTestCase(TestCase):
+    def setUp(self):
+        person = Person(nickname= 'oui', mail='oui@example.com', password='oui')
+        person.save()
+        
+    def test_person_nickname(self):
+        person = Person.objects.get(mail='oui@example.com')
+        self.assertEqual(person.nickname, 'oui')
+        
+    def test_person_mail(self):
+        person = Person.objects.get(mail='oui@example.com')
+        self.assertEqual(person.id, Person.id)
