@@ -71,6 +71,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
           Scaffold(
             body: Center(
               child: Container(
+                width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Color(0XFF97be79),
                 ),
@@ -88,11 +89,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
                               fontSize: 20, color: Colors.white),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0XFF5b8f3b),
+                          minimumSize: const Size(250, 70),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                        child: const Text('Button 1'),
+                        child: const Text('Mes données'),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -104,11 +109,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
                               fontSize: 20, color: Colors.white),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0XFF5b8f3b),
+                          minimumSize: const Size(250, 70),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                        child: const Text('Button 2'),
+                        child: const Text('Mes plantes'),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -120,11 +129,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
                               fontSize: 20, color: Colors.white),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0XFF5b8f3b),
+                          minimumSize: const Size(250, 70),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                        child: const Text('Button 3'),
+                        child: const Text('Mes annonces'),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -136,11 +149,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
                               fontSize: 20, color: Colors.white),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0XFF5b8f3b),
+                          minimumSize: const Size(250, 70),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                        child: const Text('Button 4'),
+                        child: const Text('Mes réservations'),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -152,26 +169,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
                               fontSize: 20, color: Colors.white),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0XFF5b8f3b),
+                          minimumSize: const Size(250, 70),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                        child: const Text('Button 5'),
+                        child: const Text('Mes avis'),
                       ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Page6()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                          backgroundColor: Colors.red,
-                        ),
-                        child: const Text('Button 6'),
-                      ),
+                      const SizedBox(height: 0),
                     ]),
               ),
             ),
@@ -226,7 +232,7 @@ class Page1 extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
-        title: const Text("Page 1"),
+        title: const Text("Mes données"),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
@@ -251,7 +257,7 @@ class Page2 extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
-        title: const Text("Page 2"),
+        title: const Text("Mes plantes"),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
@@ -276,7 +282,7 @@ class Page3 extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
-        title: const Text("Page 3"),
+        title: const Text("Mes annonces"),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
@@ -301,7 +307,7 @@ class Page4 extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
-        title: const Text("Page 4"),
+        title: const Text("Mes réservations"),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
@@ -326,7 +332,7 @@ class Page5 extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
-        title: const Text("Page 5"),
+        title: const Text("Mes avis"),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
