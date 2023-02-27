@@ -34,53 +34,57 @@ def update_person(request, id):
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
 
+@api_view(['DELETE'])
+def delete_person(request, id):
+    try:
+        person = get_object_or_404(Person, pk=id)
+        person.delete()
+        return JsonResponse({'message': f'Person {id} has been deleted'})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 
 @api_view(['GET'])
 def get_all_plants(request):
     plants = Plant.objects.all()
     serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
 def get_plant_by_id(request, id):
-    try:
-        plant = Plant.objects.get(id=id)
-    except Plant.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
+    plant = get_object_or_404(Plant, id=id)
     serializer = PlantSerializer(plant)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 @api_view(['POST'])
 def create_plant(request):
     serializer = PlantSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
 
 @api_view(['PUT'])
 def update_plant(request, id):
     try:
         plant = Plant.objects.get(id=id)
     except Plant.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse(status=status.HTTP_404_NOT_FOUND)
 
     serializer = PlantSerializer(plant, data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(serializer.data)
+    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
 def delete_plant(request, id):
     try:
-        plant = Plant.objects.get(id=id)
-    except Plant.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    plant.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
+        plant = get_object_or_404(Plant, pk=id)
+        plant.delete()
+        return JsonResponse({'message': f'Plant {id} has been deleted'})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_all_comments(request):
@@ -113,9 +117,12 @@ def update_comment(request, id):
 
 @api_view(['DELETE'])
 def delete_comment(request, id):
-    comment = get_object_or_404(Comment, id=id)
-    comment.delete()
-    return JsonResponse({'message': 'Comment deleted successfully!'}, status=204)
+    try:
+        comment = get_object_or_404(Comment, pk=id)
+        comment.delete()
+        return JsonResponse({'message': f'Comment {id} has been deleted'})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_all_reservations(request):

@@ -25,8 +25,8 @@ class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=255)
     rating = models.SmallIntegerField()
-    owner = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='comments_written')
-    roser = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='comments_received')
+    owner = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='comments_received')
+    roser = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='comments_written')
 
     class Meta:
         app_label = 'backendapp'
