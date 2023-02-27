@@ -5,6 +5,9 @@ class Person(models.Model):
     nickname = models.CharField(max_length = 20)
     mail = models.CharField(max_length = 255)
     password =  models.CharField(max_length = 255)
+
+    class Meta:
+        app_label = 'backend'
   
 class Plant(models.Model):
     id = models.AutoField(primary_key=True)
@@ -13,7 +16,9 @@ class Plant(models.Model):
     description =  models.CharField(max_length = 255)
     picture = models.CharField(max_length = 2000)
     sharing = models.BooleanField()
-    id_owner = models.ForeignKey(Person, on_delete=models.CASCADE)
+    id_owner = models.ForeignKey(Person, on_delete=models.CASCADE) 
+    class Meta:
+        app_label = 'backend'
 
 class Comment(models.Model):
     id = models.AutoField(primary_key=True)
@@ -21,11 +26,8 @@ class Comment(models.Model):
     rating = models.SmallIntegerField()
     id_owner =  models.ForeignKey(Person, on_delete=models.CASCADE)
     id_roser = models.ForeignKey(Person, on_delete=models.CASCADE)
-
-class Plant_reservation(models.Model):
-    id_plant = models.ManyToManyField(id, through= 'Plant')
-    id_reservation = models.ManyToManyField(id, through= 'Reservation')
-
+    class Meta:
+        app_label = 'backend'
 class Reservation(models.Model):
     id = models.AutoField(primary_key=True)
     types = [
@@ -40,3 +42,14 @@ class Reservation(models.Model):
     description = models.CharField(max_length = 2000)
     id_roser = models.ForeignKey(Person, on_delete=models.CASCADE)
     creation_date = models.CharField(max_length = 255)
+    class Meta:
+        app_label = 'backend'
+
+
+class Plant_reservation(models.Model):
+    plant = models.ManyToManyField(Plant, through='Plant')
+    reservation = models.ManyToManyField(Reservation, through='Reservation')
+
+    class Meta:
+        app_label = 'backend'
+
