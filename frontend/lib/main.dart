@@ -69,112 +69,110 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
             ),
           )),
           Scaffold(
-            backgroundColor: const Color(0XFF97be79),
             body: Center(
-              child: ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color(0XFF97be79),
+                ),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Page1()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Button 1'),
                       ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes données',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Page2()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Button 2'),
                       ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Page3()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Button 3'),
                       ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes plantes',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Page4()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Button 4'),
                       ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Page5()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Button 5'),
                       ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes annonces',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Page6()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text('Button 6'),
                       ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes réservations',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes avis',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+                    ]),
               ),
             ),
           ),
@@ -213,6 +211,156 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
             controller: _tabController,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Page1 extends StatelessWidget {
+  const Page1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Page 1"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
+      ),
+      body: const Center(
+        child: Text('This is Page 1'),
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  const Page2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Page 2"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
+      ),
+      body: const Center(
+        child: Text('This is Page 2'),
+      ),
+    );
+  }
+}
+
+class Page3 extends StatelessWidget {
+  const Page3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Page 3"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
+      ),
+      body: const Center(
+        child: Text('This is Page 3'),
+      ),
+    );
+  }
+}
+
+class Page4 extends StatelessWidget {
+  const Page4({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Page 4"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
+      ),
+      body: const Center(
+        child: Text('This is Page 4'),
+      ),
+    );
+  }
+}
+
+class Page5 extends StatelessWidget {
+  const Page5({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Page 5"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
+      ),
+      body: const Center(
+        child: Text('This is Page 5'),
+      ),
+    );
+  }
+}
+
+class Page6 extends StatelessWidget {
+  const Page6({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Page 6"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
+      ),
+      body: const Center(
+        child: Text('This is Page 6'),
       ),
     );
   }
