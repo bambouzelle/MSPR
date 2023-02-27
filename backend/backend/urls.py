@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include,path
 from django.contrib import auth
 from django.contrib.auth.views import LoginView, LogoutView
-from . import views
+from backendapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
