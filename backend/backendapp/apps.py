@@ -35,7 +35,7 @@ class BackendappConfig(AppConfig):
         img_array
             Un batch d'array numpy correspondant à l'image, prêt à être fourni aux modèles pour prédictions
         """
-    
+
         img = tf.keras.utils.load_img(
             image, target_size=(128, 128)
         )
