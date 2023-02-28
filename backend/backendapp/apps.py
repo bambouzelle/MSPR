@@ -22,26 +22,64 @@ class BackendappConfig(AppConfig):
         sickness_detector_model = keras.models.load_model(SICKNESS_DETECTOR_PATH)
         
     
-    def encode_image(url):
-        """Encode et rezise l'img de base"""
-        sunflower_path = tf.keras.utils.get_file('image', origin=url)
+    def encode_image(image):
+        """Encode et resize l'img de base
+        
+        Parameters
+        ----------
+        image : PIL.Image instance
+            Image à encoder avant traitement IA
+            
+        Returns
+        -------
+        img_array
+            Un batch d'array numpy correspondant à l'image, prêt à être fourni aux modèles pour prédictions
+        """
+    
         img = tf.keras.utils.load_img(
-            sunflower_path, target_size=(128, 128)
+            image, target_size=(128, 128)
         )
-        img_array = tf.keras.utils.img_to_array(img)
+        img_array = tf.keras.utils.img_to_array(img)/255
         img_array = tf.expand_dims(img_array, 0) # Create a batch
         return img_array
     
-    def prediction_plant(params):
-        """Prévision à partir de l'img encodée, retourne la classe et la probabilité"""
-        img = BackendappConfig.encode_image(params)
+    def prediction_plant(image):
+        """Prévision à partir de l'img encodée, retourne la classe et la probabilité
+        
+        Parameters
+        ----------
+        image : PIL.Image instance
+            Image à encoder avant traitement IA
+            
+        Returns
+        -------
+        Predictions
+            Un Array : 
+                Array[0] = nom de la famille de plante, 
+                Array[1] = % de précision du modèle
+        """
+        
+        img = BackendappConfig.encode_image(image)
         predictions = BackendappConfig.plant_detector_model.predict(img)
         score = tf.nn.softmax(predictions[0])
         return [BackendappConfig.PLANT_NAMES[int(np.argmax(score))],  float(100 * np.max(score))]
     
-    def prediction_sickness(params):
-        """Prévision à partir de l'img encodée, retourne la classe et la probabilité"""
-        img = BackendappConfig.encode_image(params)
+    def prediction_sickness(image):
+        """Prévision à partir de l'img encodée, retourne la classe et la probabilité
+        
+        Parameters
+        ----------
+        image : PIL.Image instance
+            Image à encoder avant traitement IA
+            
+        Returns
+        -------
+        Predictions
+            Un Array : 
+                Array[0] = 'Healthy' ou 'Powdery' ou 'Rust'
+                Array[1] = % de précision du modèle
+        """
+        img = BackendappConfig.encode_image(image)
         predictions = BackendappConfig.sickness_detector_model.predict(img)
         score = tf.nn.softmax(predictions[0])
         return [BackendappConfig.PLANT_NAMES[int(np.argmax(score))],  float(100 * np.max(score))]

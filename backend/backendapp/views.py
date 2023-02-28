@@ -5,7 +5,6 @@ from .models import Person,Plant,Comment,Plant_reservation,Reservation
 from rest_framework.decorators import api_view
 from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
 
-<<<<<<< HEAD
 @api_view(['GET'])
 def get_all_persons(request):
     persons = Person.objects.all()
