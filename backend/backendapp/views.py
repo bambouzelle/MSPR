@@ -5,6 +5,7 @@ from .models import Person,Plant,Comment,Plant_reservation,Reservation
 from rest_framework.decorators import api_view
 from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
 
+<<<<<<< HEAD
 @api_view(['GET'])
 def get_all_persons(request):
     persons = Person.objects.all()
@@ -181,3 +182,16 @@ def update_plant_reservation(request, id):
         serializer.save()
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
+
+@api_view(['GET'])
+def get_plant_family(request):
+    if request.method == 'GET':
+        
+        # sentence is the query we want to get the prediction for
+        params =  request.GET.get('image')
+        
+        # predict method used to get the prediction
+        prediction = BackendappConfig.prediction_plant(params)
+        
+        # returning JSON response
+        return JsonResponse(prediction, safe=False)
