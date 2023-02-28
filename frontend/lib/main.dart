@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() => runApp(const MyApp());
 
@@ -15,6 +18,55 @@ class MyApp extends StatelessWidget {
   }
 }
 
+Future<Annonces> fetchAnnonces() async {
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:8000/reservation/'));
+
+  if (response.statusCode == 200) {
+    return Annonces.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load Reservations');
+  }
+}
+
+class Annonces {
+  late final int id;
+  late final String type;
+  late final String begin_date;
+  late final String end_date;
+  late final String pricing;
+  late final String title;
+  late final String description;
+  late final int roser;
+  late final String creation_date;
+
+  Annonces({
+    required this.id,
+    required this.type,
+    required this.begin_date,
+    required this.end_date,
+    required this.pricing,
+    required this.title,
+    required this.description,
+    required this.roser,
+    required this.creation_date,
+  });
+
+  factory Annonces.fromJson(Map<String, dynamic> json) {
+    return Annonces(
+      id: json['id'],
+      type: json['title'],
+      begin_date: json['begin_date'],
+      end_date: json['end_date'],
+      pricing: json['pricing'],
+      title: json['title'],
+      description: json['description'],
+      roser: json['roser'],
+      creation_date: json['creation_date'],
+    );
+  }
+}
+
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
 
@@ -24,12 +76,14 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget>
     with SingleTickerProviderStateMixin {
+  late Future<Annonces> futureAnnonces;
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    futureAnnonces = fetchAnnonces();
   }
 
   @override
@@ -57,17 +111,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
         controller: _tabController,
         children: <Widget>[
           Scaffold(
-              body: Container(
-            decoration: const BoxDecoration(
-              color: Color(0XFF97be79),
-            ),
-            child: const Center(
-              child: Text(
-                'Hello 1',
-                style: TextStyle(fontSize: 24, color: Color(0XFF303430)),
+            body: Container(
+              decoration: const BoxDecoration(
+                color: Color(0XFF97be79),
+              ),
+              child: Center(
+                child: FutureBuilder<Annonces>(
+                    future: futureAnnonces,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(snapshot.data!.title);
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    }),
               ),
             ),
-          )),
+          ),
           Scaffold(
             body: Center(
               child: Container(
@@ -224,7 +286,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
 class Page1 extends StatelessWidget {
   const Page1({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -249,7 +310,6 @@ class Page1 extends StatelessWidget {
 
 class Page2 extends StatelessWidget {
   const Page2({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,7 +334,6 @@ class Page2 extends StatelessWidget {
 
 class Page3 extends StatelessWidget {
   const Page3({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -299,7 +358,6 @@ class Page3 extends StatelessWidget {
 
 class Page4 extends StatelessWidget {
   const Page4({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -324,7 +382,6 @@ class Page4 extends StatelessWidget {
 
 class Page5 extends StatelessWidget {
   const Page5({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -349,7 +406,6 @@ class Page5 extends StatelessWidget {
 
 class Page6 extends StatelessWidget {
   const Page6({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
