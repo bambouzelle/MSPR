@@ -1,9 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'screens/home_page.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'A\'rosa-je';
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -15,205 +20,165 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+Future<List<Annonces>> fetchAnnonces() async {
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:8000/reservation/'));
 
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  if (response.statusCode == 200) {
+    List<Annonces> listAnnonces = [];
+    for (var i = 0; i < jsonDecode(response.body).length; i++) {
+      listAnnonces.add(Annonces.fromJson(jsonDecode(response.body)[i]));
+    }
+    return listAnnonces;
+  } else {
+    throw Exception('Failed to load Reservations');
+  }
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+Future<http.Response> createReservation(String type, String begin_date, String end_date, String pricing,String title,String description) {
+  return http.post(
+    Uri.parse('http://127.0.0.1:8000/reservation/create/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'type':type,
+      'begin_date':begin_date,
+      'end_date':end_date,
+      'pricing': pricing,
+      'title': title,
+      'description':description
+    }),
+  );
+}
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+class Annonces {
+  final int id;
+  final String type;
+  final String begin_date;
+  final String end_date;
+  final int pricing;
+  final String title;
+  final String description;
+  final int roser;
+  final String creation_date;
+
+  const Annonces({
+    required this.id,
+    required this.type,
+    required this.begin_date,
+    required this.end_date,
+    required this.pricing,
+    required this.title,
+    required this.description,
+    required this.roser,
+    required this.creation_date,
+  });
+
+  factory Annonces.fromJson(Map<String, dynamic> json) {
+    return Annonces(
+      id: json['id'],
+      type: json['title'],
+      begin_date: json['begin_date'],
+      end_date: json['end_date'],
+      pricing: json['pricing'],
+      title: json['title'],
+      description: json['description'],
+      roser: json['roser'],
+      creation_date: json['creation_date'],
+    );
   }
+}
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+Future<List<Plant>> fetchPlant() async {
+  final response = await http.get(Uri.parse('http://127.0.0.1:8000/plant/'));
+
+  if (response.statusCode == 200) {
+    List<Plant> listPlant = [];
+    for (var i = 0; i < jsonDecode(response.body).length; i++) {
+      listPlant.add(Plant.fromJson(jsonDecode(response.body)[i]));
+    }
+    return listPlant;
+  } else {
+    throw Exception('Failed to load Reservations');
   }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: const Text("A'rosa-je"),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        backgroundColor: const Color(0XFF5b8f3b),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          Scaffold(
-              body: Container(
-            decoration: const BoxDecoration(
-              color: Color(0XFF97be79),
-            ),
-            child: const Center(
-              child: Text(
-                'Hello 1',
-                style: TextStyle(fontSize: 24, color: Color(0XFF303430)),
-              ),
-            ),
-          )),
-          Scaffold(
-            backgroundColor: const Color(0XFF97be79),
-            body: Center(
-              child: ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes données',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes plantes',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes annonces',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes réservations',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 60,
-                    margin: const EdgeInsets.only(
-                        left: 80, right: 80, top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: Color(0XFF5b8f3b),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Mes avis',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0XFFcfcbcf),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        child: Container(
-          height: 80,
-          color: const Color(0XFF97be79),
-          child: TabBar(
-            indicator: const BoxDecoration(
-                color: Color(0XFF9f6152),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30))),
-            tabs: <Widget>[
-              Tab(
-                  child: Column(
-                children: const <Widget>[
-                  Icon(Icons.home, color: Colors.black, size: 30),
-                  Text("Annonces", style: TextStyle(color: Colors.black)),
-                ],
-              )),
-              Tab(
-                  child: Column(
-                children: const <Widget>[
-                  Icon(Icons.account_circle, color: Colors.black, size: 30),
-                  Text(
-                    "Compte",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              )),
-            ],
-            controller: _tabController,
-          ),
-        ),
-      ),
+Future<void> deletePlant(int id) async {
+  final url = Uri.parse('http://127.0.0.1:8000/persons/delete/$id/');
+  final response = await http.delete(url);
+
+  if (response.statusCode == 200) {
+    // ignore: avoid_print
+    print('La plante a été supprimée avec succès.');
+  } else {
+    throw Exception('Impossible de supprimer la plante.');
+  }
+}
+
+class Plant {
+  final int id;
+  final String name;
+  final String location;
+  final String description;
+  final String picture;
+  final bool sharing;
+  final int owner;
+
+  const Plant({
+    required this.id,
+    required this.name,
+    required this.location,
+    required this.description,
+    required this.picture,
+    required this.sharing,
+    required this.owner,
+  });
+  factory Plant.fromJson(Map<String, dynamic> json) {
+    return Plant(
+      id: json['id'],
+      name: json['name'],
+      location: json['location'],
+      description: json['description'],
+      picture: json['picture'],
+      sharing: json['sharing'],
+      owner: json['owner'],
+    );
+  }
+}
+
+Future<List<Data>> fetchData() async {
+  final response = await http.get(Uri.parse('http://127.0.0.1:8000/person/'));
+
+  if (response.statusCode == 200) {
+    List<Data> listData = [];
+    for (var i = 0; i < jsonDecode(response.body).length; i++) {
+      listData.add(Data.fromJson(jsonDecode(response.body)[i]));
+    }
+    return listData;
+  } else {
+    throw Exception('Failed to load Reservations');
+  }
+}
+
+class Data {
+  final int id;
+  final String nickname;
+  final String mail;
+  final String password;
+
+  const Data({
+    required this.id,
+    required this.nickname,
+    required this.mail,
+    required this.password,
+  });
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      id: json['id'],
+      nickname: json['nickname'],
+      mail: json['mail'],
+      password: json['password'],
     );
   }
 }
