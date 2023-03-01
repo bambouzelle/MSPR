@@ -101,7 +101,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Page1()),
+                                builder: (context) => const MyData()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -121,7 +121,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Page2()),
+                                builder: (context) => const MyPlants()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

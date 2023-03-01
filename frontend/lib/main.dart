@@ -9,7 +9,7 @@ import 'screens/home_page.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'A\'rosa-je';
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -70,6 +70,51 @@ class Annonces {
       description: json['description'],
       roser: json['roser'],
       creation_date: json['creation_date'],
+    );
+  }
+}
+
+Future<List<Plant>> fetchPlant() async {
+  final response = await http.get(Uri.parse('http://127.0.0.1:8000/plant/'));
+
+  if (response.statusCode == 200) {
+    List<Plant> listPlant = [];
+    for (var i = 0; i < jsonDecode(response.body).length; i++) {
+      listPlant.add(Plant.fromJson(jsonDecode(response.body)[i]));
+    }
+    return listPlant;
+  } else {
+    throw Exception('Failed to load Reservations');
+  }
+}
+
+class Plant {
+  final int id;
+  final String name;
+  final String location;
+  final String description;
+  final String picture;
+  final bool sharing;
+  final int owner;
+
+  const Plant({
+    required this.id,
+    required this.name,
+    required this.location,
+    required this.description,
+    required this.picture,
+    required this.sharing,
+    required this.owner,
+  });
+  factory Plant.fromJson(Map<String, dynamic> json) {
+    return Plant(
+      id: json['id'],
+      name: json['name'],
+      location: json['location'],
+      description: json['description'],
+      picture: json['picture'],
+      sharing: json['sharing'],
+      owner: json['owner'],
     );
   }
 }
