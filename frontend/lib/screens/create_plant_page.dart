@@ -39,8 +39,17 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
       appBar: AppBar(
-        title: const Text('Créer un post'),
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Ajouter une plante"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -123,10 +132,21 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
                 },
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Créer'),
-              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _submitForm,
+                  style: ElevatedButton.styleFrom(
+                    textStyle:
+                        const TextStyle(fontSize: 20, color: Colors.white),
+                    backgroundColor: const Color(0XFF5b8f3b),
+                    minimumSize: const Size(250, 70),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: const Text('Créer'),
+                ),
+              )
             ],
           ),
         ),

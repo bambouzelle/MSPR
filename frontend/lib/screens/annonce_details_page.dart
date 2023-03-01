@@ -56,12 +56,12 @@ class AnnonceDetailPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyPlants(),
-                    ),
-                  );
+                  //Navigator.push(
+                  //context,
+                  //MaterialPageRoute(
+                  //builder: (context) => const MyPlants(),
+                  //),
+                  //);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: const TextStyle(fontSize: 20, color: Colors.white),
