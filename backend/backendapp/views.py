@@ -63,7 +63,6 @@ def create_plant(request):
     print(request)
     try:
         image_blob = request.data['picture']
-        print(image_blob[0:32])
         BackendappConfig.decode_image(image_blob)    
         predictions = BackendappConfig.prediction_plant("image.png")
         request.data["name"] = str(predictions[0])

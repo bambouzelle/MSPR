@@ -30,7 +30,6 @@ class BackendappConfig(AppConfig):
         """Decode image à partir du string base"""
         b = encodedImage.encode("utf-8")
         base64_bytes = base64.b64decode(b)
-        print(base64_bytes)
         image = open("image.png", "wb")
         image.write(base64_bytes)
         image.close()
