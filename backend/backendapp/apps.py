@@ -3,8 +3,13 @@ from tensorflow import keras
 from pathlib import Path
 import tensorflow as tf
 import numpy as np
+import io
+from PIL import Image
+import base64
 
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 class BackendappConfig(AppConfig):
+    
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'backendapp'
     
@@ -21,7 +26,15 @@ class BackendappConfig(AppConfig):
         plant_detector_model = keras.models.load_model(PLANT_DETECTOR_PATH)
         sickness_detector_model = keras.models.load_model(SICKNESS_DETECTOR_PATH)
         
-    
+    def decode_image(encodedImage):
+        """Decode image à partir du string base"""
+        image_encode = encodedImage.encode("utf-8")
+        image = base64.b64decode (image_encode)
+        img=Image.open(io.BytesIO(image))
+        image = open("image.png", "wb")
+        image.write(base64.b64decode (image_encode))
+        image.close()
+        
     def encode_image(image):
         """Encode et resize l'img de base
         

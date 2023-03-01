@@ -4,10 +4,7 @@ from django.http import JsonResponse
 from .models import Person,Plant,Comment,Plant_reservation,Reservation
 from rest_framework.decorators import api_view
 from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
-import io
-from PIL import Image
 import json
-import base64
 from backendapp.apps import BackendappConfig
 
 @api_view(['GET'])
@@ -63,33 +60,15 @@ def get_plant_by_id(request, id):
 
 @api_view(['POST'])
 def create_plant(request):
-    data = {"name":[],"location":[],"descritption":[], "picture":[], "sharing":[], "owner": []};
     print(request)
-    try:
-        body_unicode = request.body.decode('ascii')
-        body_data = json.loads(body_unicode)
-        print(body_data['picture'])
-        
-        image_blob = body_data['picture']
-        image_encode = image_blob.encode("utf-8")
-        image = base64.b64decode (image_encode)
-        img=Image.open(io.BytesIO(image))
-        image = open("image.png", "wb")
-        image.write(base64.b64decode (image_encode))
-        image.close()
-        print(img)
-    
+    body_unicode = request.body.decode('ascii')
+    body_data = json.loads(body_unicode)
+    if (request.data['picture']):
+        image_blob = request.data['picture']
+        BackendappConfig.decode_image(image_blob)    
         predictions = BackendappConfig.prediction_plant("image.png")
-        body_data["name"] = predictions[0]
-        print(body_data)
-    
-        serializer = PlantSerializer(data=body_data)
-    except(Exception(e)):
-        print("exception")
-        print(e)
-        var_exists = False
-    if (var_exists == False):
-        serializer = PlantSerializer(data=request.data)
+        request.data["name"] = str(predictions[0])
+    serializer = PlantSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=201)
