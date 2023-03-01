@@ -14,7 +14,7 @@ class Plant(models.Model):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    picture = models.TextField()
+    picture = models.CharField(max_length=2000)
     sharing = models.BooleanField()
     owner = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='plants')
 
