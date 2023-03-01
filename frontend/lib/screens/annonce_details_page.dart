@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/account_page.dart';
 import '../main.dart';
-import 'account_page.dart';
 
 class AnnonceDetailPage extends StatelessWidget {
   final Annonces annonce;
@@ -59,7 +59,7 @@ class AnnonceDetailPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Page1(),
+                      builder: (context) => const MyPlants(),
                     ),
                   );
                 },
