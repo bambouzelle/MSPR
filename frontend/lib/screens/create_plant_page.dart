@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class CreatePlantPage extends StatefulWidget {
   const CreatePlantPage({Key? key}) : super(key: key);
@@ -17,6 +20,15 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
   final _pictureController = TextEditingController();
   final _sharingController = TextEditingController();
   final _ownerController = TextEditingController();
+  File imageFile = File("");
+  String base64Image = "";
+
+Future<void> _pickImage(ImageSource source) async {
+  var image = await ImagePicker().getImage(source: source);
+  final imageFile = File(image!.path);
+  final bytes = await imageFile.readAsBytes();
+  final base64Image = base64Encode(bytes);
+}
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -27,7 +39,7 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
           'name': _nameController.text,
           'location': _locationController.text,
           'description': _descriptionController.text,
-          'picture': _pictureController.text,
+          'picture': base64Image,
           'sharing': _sharingController.text,
           'owner': _ownerController.text
         },
@@ -35,6 +47,7 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
       // Handle the response from the server.
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +99,18 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _pictureController,
-                decoration: const InputDecoration(
-                  labelText: 'Image',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer une image';
-                  }
-                  return null;
-                },
-              ),
+              ElevatedButton(
+  onPressed: () => _pickImage(ImageSource.gallery),
+  child:Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.camera_alt),
+            Text('Choisir une image')
+          ],
+        )
+      ,
+),
+
               TextFormField(
                 controller: _sharingController,
                 decoration: const InputDecoration(
