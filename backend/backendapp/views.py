@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from .models import Person,Plant,Comment,Plant_reservation,Reservation
 from rest_framework.decorators import api_view
 from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
-import json
 from backendapp.apps import BackendappConfig
+import json
 
 @api_view(['GET'])
 def get_all_persons(request):
@@ -61,13 +61,14 @@ def get_plant_by_id(request, id):
 @api_view(['POST'])
 def create_plant(request):
     print(request)
-    body_unicode = request.body.decode('ascii')
-    body_data = json.loads(body_unicode)
-    if (request.data['picture']):
+    try:
         image_blob = request.data['picture']
+        print(image_blob[0:32])
         BackendappConfig.decode_image(image_blob)    
         predictions = BackendappConfig.prediction_plant("image.png")
         request.data["name"] = str(predictions[0])
+    except(Exception(e)):
+        print(e)
     serializer = PlantSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
