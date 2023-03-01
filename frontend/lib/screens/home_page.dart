@@ -94,9 +94,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                                             const CreateReservationPage()),
                                   );
                                 },
-                                child: const Text('Ajouter une reservation'),
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: const TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                  backgroundColor: const Color(0XFF5b8f3b),
+                                  minimumSize: const Size(250, 70),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                ),
+                                child: const Text('Ajouter une annonce'),
                               ),
                             ),
+                            const SizedBox(height: 30),
                           ],
                         );
                       } else if (snapshot.hasError) {

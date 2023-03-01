@@ -46,8 +46,17 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0XFF97be79),
       appBar: AppBar(
-        title: const Text('Créer une réservation'),
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text("Créer une réservation"),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        backgroundColor: const Color(0XFF5b8f3b),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -158,9 +167,20 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Créer la réservation'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _submitForm,
+                  style: ElevatedButton.styleFrom(
+                    textStyle:
+                        const TextStyle(fontSize: 20, color: Colors.white),
+                    backgroundColor: const Color(0XFF5b8f3b),
+                    minimumSize: const Size(250, 70),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: const Text('Créer la réservation'),
+                ),
               ),
             ],
           ),

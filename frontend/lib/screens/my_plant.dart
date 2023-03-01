@@ -89,9 +89,19 @@ class _MyPlantsState extends State<MyPlants>
                                       const CreatePlantPage()),
                             );
                           },
+                          style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                            backgroundColor: const Color(0XFF5b8f3b),
+                            minimumSize: const Size(250, 70),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ),
                           child: const Text('Ajouter une plante'),
                         ),
                       ),
+                      const SizedBox(height: 30),
                     ],
                   );
                 } else if (snapshot.hasError) {
@@ -138,14 +148,24 @@ class PlantDetailPage extends StatelessWidget {
             style: const TextStyle(fontSize: 18.0),
           ),
           const SizedBox(height: 50.0),
-          Center(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
                 deletePlant(plant.id);
               },
+              style: ElevatedButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20, color: Colors.white),
+                backgroundColor: const Color(0XFF5b8f3b),
+                minimumSize: const Size(250, 70),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
               child: const Text('Supprimer la plante'),
             ),
           ),
+          const SizedBox(height: 30),
         ]),
       ),
     );
