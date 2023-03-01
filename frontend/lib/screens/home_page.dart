@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/create_reservation_page.dart';
 import '../main.dart';
-import 'account_page.dart';
+import 'my_plant.dart';
 import 'annonce_details_page.dart';
 
 class MyStatefulWidget extends StatefulWidget {
@@ -60,14 +61,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                     future: futureAnnonces as Future<List<Annonces>>,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => ListTile(
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (_, index) => ListTile(
                                   title: Text(snapshot.data![index].title),
                                   subtitle:
                                       Text(snapshot.data![index].description),
-                                  trailing: Text(
-                                      snapshot.data![index].pricing.toString()),
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -77,7 +79,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                                       ),
                                     );
                                   },
-                                ));
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CreateReservationPage()),
+                                  );
+                                },
+                                child: const Text('Ajouter une reservation'),
+                              ),
+                            ),
+                          ],
+                        );
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
@@ -98,11 +119,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyData()),
-                          );
+                          //Navigator.push(
+                          //context,
+                          //MaterialPageRoute(
+                          //builder: (context) => const MyData()),
+                          //);
                         },
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
@@ -138,11 +159,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Page3()),
-                          );
+                          //Navigator.push(
+                          //context,
+                          //MaterialPageRoute(
+                          //builder: (context) => const Page3()),
+                          //);
                         },
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
@@ -158,11 +179,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Page4()),
-                          );
+                          //Navigator.push(
+                          //context,
+                          //MaterialPageRoute(
+                          //builder: (context) => const Page4()),
+                          //);
                         },
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(
@@ -178,11 +199,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Page5()),
-                          );
+                          //Navigator.push(
+                          //context,
+                          //MaterialPageRoute(
+                          //builder: (context) => const Page5()),
+                          //);
                         },
                         style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(

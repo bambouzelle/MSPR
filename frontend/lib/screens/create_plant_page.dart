@@ -5,6 +5,7 @@ class CreatePlantPage extends StatefulWidget {
   const CreatePlantPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CreatePlantPageState createState() => _CreatePlantPageState();
 }
 
@@ -19,6 +20,7 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      // ignore: unused_local_variable
       final response = await http.post(
         Uri.parse('http://127.0.0.1:8000/plant/create/'),
         body: {

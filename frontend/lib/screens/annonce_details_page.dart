@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/account_page.dart';
 import '../main.dart';
+import 'my_plant.dart';
 
 class AnnonceDetailPage extends StatelessWidget {
   final Annonces annonce;
