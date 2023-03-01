@@ -88,6 +88,18 @@ Future<List<Plant>> fetchPlant() async {
   }
 }
 
+Future<void> deletePlant(int id) async {
+  final url = Uri.parse('http://127.0.0.1:8000/persons/delete/$id/');
+  final response = await http.delete(url);
+
+  if (response.statusCode == 200) {
+    // ignore: avoid_print
+    print('La plante a été supprimée avec succès.');
+  } else {
+    throw Exception('Impossible de supprimer la plante.');
+  }
+}
+
 class Plant {
   final int id;
   final String name;
@@ -115,6 +127,42 @@ class Plant {
       picture: json['picture'],
       sharing: json['sharing'],
       owner: json['owner'],
+    );
+  }
+}
+
+Future<List<Data>> fetchData() async {
+  final response = await http.get(Uri.parse('http://127.0.0.1:8000/person/'));
+
+  if (response.statusCode == 200) {
+    List<Data> listData = [];
+    for (var i = 0; i < jsonDecode(response.body).length; i++) {
+      listData.add(Data.fromJson(jsonDecode(response.body)[i]));
+    }
+    return listData;
+  } else {
+    throw Exception('Failed to load Reservations');
+  }
+}
+
+class Data {
+  final int id;
+  final String nickname;
+  final String mail;
+  final String password;
+
+  const Data({
+    required this.id,
+    required this.nickname,
+    required this.mail,
+    required this.password,
+  });
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      id: json['id'],
+      nickname: json['nickname'],
+      mail: json['mail'],
+      password: json['password'],
     );
   }
 }
