@@ -17,7 +17,6 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _roserController = TextEditingController();
-  final _creationDateController = TextEditingController();
 
   String _selectedType = 'OH';
 
@@ -36,7 +35,6 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
           'title': _titleController.text,
           'description': _descriptionController.text,
           'roser': _roserController.text,
-          'creation_date':_creationDateController.text,
         },
       );
       // Handle the response from the server.
@@ -150,18 +148,6 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer le nom de la personne réservant';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _creationDateController,
-                decoration: const InputDecoration(
-                  labelText: 'Date de la creation',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer la date de création';
                   }
                   return null;
                 },

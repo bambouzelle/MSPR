@@ -36,23 +36,6 @@ Future<List<Annonces>> fetchAnnonces() async {
   }
 }
 
-Future<http.Response> createReservation(String type, String begin_date, String end_date, String pricing,String title,String description) {
-  return http.post(
-    Uri.parse('http://127.0.0.1:8000/reservation/create/'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'type':type,
-      'begin_date':begin_date,
-      'end_date':end_date,
-      'pricing': pricing,
-      'title': title,
-      'description':description
-    }),
-  );
-}
-
 class Annonces {
   final int id;
   final String type;
