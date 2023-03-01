@@ -15,6 +15,7 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
   final _descriptionController = TextEditingController();
   final _pictureController = TextEditingController();
   final _sharingController = TextEditingController();
+  final _ownerController = TextEditingController();
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -26,6 +27,7 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
           'description': _descriptionController.text,
           'picture': _pictureController.text,
           'sharing': _sharingController.text,
+          'owner': _ownerController.text
         },
       );
       // Handle the response from the server.
@@ -102,6 +104,18 @@ class _CreatePlantPageState extends State<CreatePlantPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer une valeur de partage';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _ownerController,
+                decoration: const InputDecoration(
+                  labelText: 'Owner',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez entrer une id owner';
                   }
                   return null;
                 },
