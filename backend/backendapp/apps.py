@@ -6,6 +6,7 @@ import numpy as np
 import io
 from PIL import Image
 import base64
+import hashlib
 
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 class BackendappConfig(AppConfig):
@@ -95,3 +96,22 @@ class BackendappConfig(AppConfig):
         predictions = BackendappConfig.sickness_detector_model.predict(img)
         score = tf.nn.softmax(predictions[0])
         return [BackendappConfig.PLANT_NAMES[int(np.argmax(score))],  float(100 * np.max(score))]
+    
+    
+    def save_password(raw_password):
+        """Encode le password avant enregistrement en base
+        
+        Parameters
+        ----------
+        raw_password : str
+            password à encoder
+            
+        Returns
+        -------
+        Encoded password: str
+        """
+        salt = hashlib.sha256('arosaje'.encode('utf-8'))
+        saltedPassword = raw_password.encode('utf-8') + salt
+        encodedPassword = hashlib.sha256(saltedPassword)
+        return encodedPassword
+        

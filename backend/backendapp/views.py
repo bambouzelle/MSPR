@@ -21,6 +21,7 @@ def get_person_by_id(request, id):
 
 @api_view(['POST'])
 def create_person(request):
+    request.data["password"] = BackendappConfig.save_password(request.data["password"])
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -35,6 +36,17 @@ def update_person(request, id):
         serializer.save()
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
+
+@api_view(['GET'])
+def login(request):
+    encodedPassword = BackendappConfig.save_password(request.data["password"])
+    person = Person.objects.get(mail=request.data["mail"], password=encodedPassword)
+    if (person.nickname != ""):
+        response = HttpResponse('authentified')
+        response.set_cookie('cookie', 'MY COOKIE VALUE')
+        return response
+        
+        
 
 @api_view(['DELETE'])
 def delete_person(request, id):
