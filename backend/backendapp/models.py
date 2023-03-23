@@ -6,6 +6,8 @@ class Person(models.Model):
     mail = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
 
+    def get_id(self):
+        return self.id
     class Meta:
         app_label = 'backendapp'
 
@@ -52,6 +54,13 @@ class Reservation(models.Model):
 class Plant_reservation(models.Model):
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'backendapp'
+
+class Person_salt(models.Model):
+    person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
+    salt = models.CharField(max_length=255)
 
     class Meta:
         app_label = 'backendapp'
