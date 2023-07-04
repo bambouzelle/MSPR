@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'my_plant.dart';
+import 'package:frontend/styles/styles.dart';
 
 class AnnonceDetailPage extends StatelessWidget {
   final Annonces annonce;
@@ -10,7 +10,7 @@ class AnnonceDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
+      backgroundColor: primaryColor,
       appBar: AppBar(
         title: const Text('Détails de l\'annonce'),
         toolbarHeight: 80,
@@ -20,7 +20,7 @@ class AnnonceDetailPage extends StatelessWidget {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: const Color(0XFF5b8f3b),
+        backgroundColor: secondaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -63,14 +63,7 @@ class AnnonceDetailPage extends StatelessWidget {
                   //),
                   //);
                 },
-                style: ElevatedButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 20, color: Colors.white),
-                  backgroundColor: const Color(0XFF5b8f3b),
-                  minimumSize: const Size(250, 70),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                ),
+                style: elevatedButtonStyle(),
                 child: const Text('Réserver'),
               ),
             ),

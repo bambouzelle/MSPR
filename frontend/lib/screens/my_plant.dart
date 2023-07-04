@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/create_plant_page.dart';
 import '../main.dart';
+import 'package:frontend/styles/styles.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
@@ -37,21 +38,11 @@ class _MyPlantsState extends State<MyPlants>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: const Text("Mes plantes"),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        backgroundColor: const Color(0XFF5b8f3b),
-      ),
+      backgroundColor: primaryColor,
+      appBar: appBar("Mes plantes"),
       body: Container(
         decoration: const BoxDecoration(
-          color: Color(0XFF97be79),
+          color: primaryColor,
         ),
         child: Center(
           child: FutureBuilder<List<Plant>>(
@@ -89,15 +80,7 @@ class _MyPlantsState extends State<MyPlants>
                                       const CreatePlantPage()),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                            textStyle: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                            backgroundColor: const Color(0XFF5b8f3b),
-                            minimumSize: const Size(250, 70),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                          ),
+                          style: elevatedButtonStyle(),
                           child: const Text('Ajouter une plante'),
                         ),
                       ),
@@ -123,18 +106,8 @@ class PlantDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
-      appBar: AppBar(
-        title: const Text('Détails de la plante'),
-        toolbarHeight: 80,
-        centerTitle: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        backgroundColor: const Color(0XFF5b8f3b),
-      ),
+      backgroundColor: primaryColor,
+      appBar: appBar('Détails de la plante'),
       body: Center(
         child: Column(children: [
           const SizedBox(height: 16.0),
@@ -154,14 +127,7 @@ class PlantDetailPage extends StatelessWidget {
               onPressed: () {
                 deletePlant(plant.id);
               },
-              style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20, color: Colors.white),
-                backgroundColor: const Color(0XFF5b8f3b),
-                minimumSize: const Size(250, 70),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              ),
+              style: elevatedButtonStyle(),
               child: const Text('Supprimer la plante'),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home_page.dart';
+import 'package:frontend/styles/styles.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,18 +17,8 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: const Text("Login"),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        backgroundColor: const Color(0XFF5b8f3b),
-      ),
+      backgroundColor: primaryColor,
+      appBar: appBar("Login"),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -87,7 +78,7 @@ class _LoginState extends State<Login> {
                     style: ElevatedButton.styleFrom(
                       textStyle:
                           const TextStyle(fontSize: 20, color: Colors.white),
-                      backgroundColor: const Color(0XFF5b8f3b),
+                      backgroundColor: secondaryColor,
                       minimumSize: const Size(250, 70),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
