@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/styles/styles.dart';
-import 'register.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirm = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: appBar("Login"),
+      appBar: appBar("S'inscrire"),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -33,10 +33,10 @@ class _LoginState extends State<Login> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Email :"),
+                      border: OutlineInputBorder(), labelText: "Email"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Email non saisis !';
+                      return 'Please enter your email';
                     }
                     return null;
                   },
@@ -53,26 +53,32 @@ class _LoginState extends State<Login> {
                       labelText: "Mot de passe :"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Mot de passe non saisis';
+                      return 'Merci de saisir un mot de passe !';
                     }
                     return null;
                   },
                 ),
               ),
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: InkWell(
-                    child:
-                        const Text('Pas encore de compte ? Créez-en un ici !'),
-                    onTap: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Register()),
-                      )
-                    },
-                  )),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: passwordConfirm,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Confirmation du mot de passe :"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Merci de saisir un mot de passe !';
+                    }
+                    if (value != passwordController.text) {
+                      return 'Les mots de passe ne correspondent pas !';
+                    }
+                    return null;
+                  },
+                ),
+              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
@@ -88,7 +94,8 @@ class _LoginState extends State<Login> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Merci de renseigner les champs')),
+                              content:
+                                  Text('Des champs ne sont pas remplis !')),
                         );
                       }
                     },
@@ -101,7 +108,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Text('Soumettre'),
+                    child: const Text('S\'enregistrer'),
                   ),
                 ),
               ),
