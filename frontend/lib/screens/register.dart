@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/styles/styles.dart';
+import 'login.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _RegisterState extends State<Register> {
                       border: OutlineInputBorder(), labelText: "Email"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return 'Email non saisis';
                     }
                     return null;
                   },
@@ -79,6 +80,18 @@ class _RegisterState extends State<Register> {
                   },
                 ),
               ),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: InkWell(
+                    child: const Text('Déjà un compte ? Connectez-vous ici !'),
+                    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      )
+                    },
+                  )),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
