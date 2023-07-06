@@ -3,6 +3,7 @@ import 'package:frontend/screens/create_reservation_page.dart';
 import '../main.dart';
 import 'my_plant.dart';
 import 'annonce_details_page.dart';
+import 'package:frontend/styles/styles.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
@@ -36,25 +37,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: const Text("A'rosa-je"),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        backgroundColor: const Color(0XFF5b8f3b),
-      ),
+      backgroundColor: primaryColor,
+      appBar: appBar("A'rosa-je"),
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
           Scaffold(
             body: Container(
               decoration: const BoxDecoration(
-                color: Color(0XFF97be79),
+                color: primaryColor,
               ),
               child: Center(
                 child: FutureBuilder<List<Annonces>>(
@@ -94,15 +85,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                                             const CreateReservationPage()),
                                   );
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  textStyle: const TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                  backgroundColor: const Color(0XFF5b8f3b),
-                                  minimumSize: const Size(250, 70),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                ),
+                                style: elevatedButtonStyle(),
                                 child: const Text('Ajouter une annonce'),
                               ),
                             ),
@@ -122,7 +105,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Color(0XFF97be79),
+                  color: primaryColor,
                 ),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -135,15 +118,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           //builder: (context) => const MyData()),
                           //);
                         },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                          backgroundColor: const Color(0XFF5b8f3b),
-                          minimumSize: const Size(250, 70),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
+                        style: elevatedButtonStyle(),
                         child: const Text('Mes données'),
                       ),
                       const SizedBox(height: 30),
@@ -155,15 +130,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                                 builder: (context) => const MyPlants()),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                          backgroundColor: const Color(0XFF5b8f3b),
-                          minimumSize: const Size(250, 70),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
+                        style: elevatedButtonStyle(),
                         child: const Text('Mes plantes'),
                       ),
                       const SizedBox(height: 30),
@@ -175,15 +142,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           //builder: (context) => const Page3()),
                           //);
                         },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                          backgroundColor: const Color(0XFF5b8f3b),
-                          minimumSize: const Size(250, 70),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
+                        style: elevatedButtonStyle(),
                         child: const Text('Mes annonces'),
                       ),
                       const SizedBox(height: 30),
@@ -195,15 +154,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           //builder: (context) => const Page4()),
                           //);
                         },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                          backgroundColor: const Color(0XFF5b8f3b),
-                          minimumSize: const Size(250, 70),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
+                        style: elevatedButtonStyle(),
                         child: const Text('Mes réservations'),
                       ),
                       const SizedBox(height: 30),
@@ -215,15 +166,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           //builder: (context) => const Page5()),
                           //);
                         },
-                        style: ElevatedButton.styleFrom(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                          backgroundColor: const Color(0XFF5b8f3b),
-                          minimumSize: const Size(250, 70),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
+                        style: elevatedButtonStyle(),
                         child: const Text('Mes avis'),
                       ),
                       const SizedBox(height: 0),
@@ -237,7 +180,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
         elevation: 0,
         child: Container(
           height: 80,
-          color: const Color(0XFF97be79),
+          color: primaryColor,
           child: TabBar(
             indicator: const BoxDecoration(
                 color: Color(0XFF9f6152),

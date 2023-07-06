@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Person,Plant,Comment,Plant_reservation,Reservation
+from .models import Person,Plant,Comment,Plant_reservation,Reservation,Person_salt
 from rest_framework.decorators import api_view
 from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
 from backendapp.apps import BackendappConfig
@@ -21,9 +21,25 @@ def get_person_by_id(request, id):
 
 @api_view(['POST'])
 def create_person(request):
+    salt = BackendappConfig.get_salt();
+    password = BackendappConfig.encode_password(request.data["password"], salt)
+    request.data["password"] = password
     serializer = PersonSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
         serializer.save()
+        p = Person.objects.get(nickname=request.data["nickname"], mail=request.data["mail"], password=password )
+        pId = p.get_id()
+        print(pId)
+        personSalt = Person_salt()
+        print(personSalt)
+        personSaltSerializer = personSaltSerializer()
+        print(personSaltSerializer)
+        if personSaltSerializer.is_valid():
+            print(personSaltSerializer)
+            personSaltSerializer.save()
+        else: print("pb")
+        
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
 
@@ -35,6 +51,15 @@ def update_person(request, id):
         serializer.save()
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
+
+@api_view(['GET'])
+def login(request):
+    encodedPassword = BackendappConfig.encode_password(request.data["password"], salt)
+    person = Person.objects.get(mail=request.data["mail"], password=encodedPassword)
+    if (person.nickname != ""):
+        response = HttpResponse('authentified')
+        response.set_cookie('cookie', 'MY COOKIE VALUE')
+        return response
 
 @api_view(['DELETE'])
 def delete_person(request, id):

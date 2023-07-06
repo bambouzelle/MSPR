@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:frontend/styles/styles.dart';
 
 class CreateReservationPage extends StatefulWidget {
   const CreateReservationPage({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF97be79),
+      backgroundColor: primaryColor,
       appBar: AppBar(
         toolbarHeight: 80,
         centerTitle: true,
@@ -54,7 +55,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: const Color(0XFF5b8f3b),
+        backgroundColor: secondaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -156,15 +157,7 @@ class _CreateReservationPageState extends State<CreateReservationPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: _submitForm,
-                  style: ElevatedButton.styleFrom(
-                    textStyle:
-                        const TextStyle(fontSize: 20, color: Colors.white),
-                    backgroundColor: const Color(0XFF5b8f3b),
-                    minimumSize: const Size(250, 70),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
+                  style: elevatedButtonStyle(),
                   child: const Text('Créer la réservation'),
                 ),
               ),
