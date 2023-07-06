@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/create_reservation_page.dart';
 import '../main.dart';
 import 'my_plant.dart';
+import 'messages.dart';
 import 'annonce_details_page.dart';
 import 'package:frontend/styles/styles.dart';
 
@@ -127,6 +128,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+                                builder: (context) => MessageScreen()),
+                          );
+                        },
+                        style: elevatedButtonStyle(),
+                        child: const Text('Mes messages'),
+                      ),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
                                 builder: (context) => const MyPlants()),
                           );
                         },
@@ -167,7 +180,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           //);
                         },
                         style: elevatedButtonStyle(),
-                        child: const Text('Mes avis'),
+                        child: const Text('Déconnexion'),
                       ),
                       const SizedBox(height: 0),
                     ]),
@@ -187,17 +200,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30))),
-            tabs: <Widget>[
+            tabs: const <Widget>[
               Tab(
                   child: Column(
-                children: const <Widget>[
+                children: <Widget>[
                   Icon(Icons.home, color: Colors.black, size: 30),
                   Text("Annonces", style: TextStyle(color: Colors.black)),
                 ],
               )),
               Tab(
                   child: Column(
-                children: const <Widget>[
+                children: <Widget>[
                   Icon(Icons.account_circle, color: Colors.black, size: 30),
                   Text(
                     "Compte",
