@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Person,Plant,Comment,Plant_reservation,Reservation,Person_salt
+from .models import Person,Plant,Message,Plant_reservation,Reservation,Person_salt
 from rest_framework.decorators import api_view
-from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
+from .serializers import PersonSerializer,PlantSerializer,MessageSerializer,PlantReservationSerializer,ReservationSerializer
 from backendapp.apps import BackendappConfig
 import json
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Person, Plant, Comment, Reservation, Plant_reservation, Person_salt
+from .models import Person, Plant, Message, Reservation, Plant_reservation, Person_salt
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
