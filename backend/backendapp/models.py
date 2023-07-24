@@ -21,12 +21,12 @@ class Plant(models.Model):
     class Meta:
         app_label = 'backendapp'
 
-class Comment(models.Model):
+class Message(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=255)
-    rating = models.SmallIntegerField()
-    owner = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='comments_received')
-    roser = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='comments_written')
+    message = models.CharField(max_length=255)
+    date_envoie = models.CharField(max_length=255)
+    id_plant = models.ForeignKey(Plant, on_delete=models.CASCADE, related_name='messages_received')
+    id_roser = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='messages_written')
 
     class Meta:
         app_label = 'backendapp'

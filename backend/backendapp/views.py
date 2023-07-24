@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Person,Plant,Comment,Plant_reservation,Reservation
+from .models import Person,Plant,Message,Plant_reservation,Reservation
 from rest_framework.decorators import api_view
-from .serializers import PersonSerializer,PlantSerializer,CommentSerializer,PlantReservationSerializer,ReservationSerializer
+from .serializers import PersonSerializer,PlantSerializer,MessageSerializer,PlantReservationSerializer,ReservationSerializer
 
 @api_view(['GET'])
 def get_all_persons(request):
@@ -87,42 +87,42 @@ def delete_plant(request, id):
         return JsonResponse({'error': str(e)}, status=500)
 
 @api_view(['GET'])
-def get_all_comments(request):
-    comments = Comment.objects.all()
-    serializer = CommentSerializer(comments, many=True)
-    return JsonResponse(serializer.data, safe=False)
+def get_all_messages(request):
+    messages = Message.objects.all()
+    serializer = MessageSerializer(messages, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
-def get_comment_by_id(request, id):
-    comment = get_object_or_404(Comment, id=id)
-    serializer = CommentSerializer(comment)
-    return JsonResponse(serializer.data)
+def get_message_by_id(request, id):
+    message = get_object_or_404(Message, id=id)
+    serializer = MessageSerializer(message)
+    return Response(serializer.data)
 
 @api_view(['POST'])
-def create_comment(request):
-    serializer = CommentSerializer(data=request.data)
+def create_message(request):
+    serializer = MessageSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
 
 @api_view(['PUT'])
-def update_comment(request, id):
-    comment = get_object_or_404(Comment, id=id)
-    serializer = CommentSerializer(comment, data=request.data)
+def update_message(request, id):
+    message = get_object_or_404(Message, id=id)
+    serializer = MessageSerializer(message, data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return JsonResponse(serializer.data)
-    return JsonResponse(serializer.errors, status=400)
+        return Response(serializer.data)
+    return Response(serializer.errors, status=400)
 
 @api_view(['DELETE'])
-def delete_comment(request, id):
+def delete_message(request, id):
     try:
-        comment = get_object_or_404(Comment, pk=id)
-        comment.delete()
-        return JsonResponse({'message': f'Comment {id} has been deleted'})
+        message = get_object_or_404(Message, pk=id)
+        message.delete()
+        return Response({'message': f'Message {id} has been deleted'})
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return Response({'error': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_all_reservations(request):

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Person, Plant, Comment, Reservation, Plant_reservation
+from .models import Person, Plant, Message, Reservation, Plant_reservation
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,9 +11,9 @@ class PlantSerializer(serializers.ModelSerializer):
         model = Plant
         fields = '__all__'
 
-class CommentSerializer(serializers.ModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Message
         fields = '__all__'
 
 class ReservationSerializer(serializers.ModelSerializer):
