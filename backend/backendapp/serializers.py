@@ -11,9 +11,9 @@ class PlantSerializer(serializers.ModelSerializer):
         model = Plant
         fields = '__all__'
 
-class CommentSerializer(serializers.ModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Message
         fields = '__all__'
 
 class ReservationSerializer(serializers.ModelSerializer):
