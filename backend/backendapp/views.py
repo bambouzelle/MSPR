@@ -14,8 +14,8 @@ def get_all_persons(request):
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
-def get_person_by_id(request, id):
-    person = get_object_or_404(Person, id=id)
+def get_person_by_mail(request, mail):
+    person = get_object_or_404(Person, mail=mail)
     serializer = PersonSerializer(person)
     return JsonResponse(serializer.data)
 
