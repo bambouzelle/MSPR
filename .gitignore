@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 backend/lib/
+backend/backendapp/model/
 lib64/
 parts/
 sdist/
@@ -130,3 +131,4 @@ dmypy.json
 
 # Databse
 /database/sqlite3.exe
+sq
