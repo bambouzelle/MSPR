@@ -59,6 +59,7 @@ class Plant_reservation(models.Model):
         app_label = 'backendapp'
 
 class Person_salt(models.Model):
+    id = models.AutoField(primary_key=True)
     person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
     salt = models.CharField(max_length=255)
 

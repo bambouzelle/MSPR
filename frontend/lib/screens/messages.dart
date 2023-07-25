@@ -57,12 +57,11 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     super.initState();
-    fetchMessages();
   }
 
-  Future<void> fetchMessages() async {
+  Future<void> fetchMessages(id) async {
     final response =
-        await http.get(Uri.parse('http://127.0.0.1:8000/message/1'));
+        await http.get(Uri.parse('http://127.0.0.1:8000/message/$id'));
     if (response.statusCode == 200) {
       //print(response.body);
       List<dynamic> data = json.decode(response.body);
@@ -97,6 +96,9 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int idConnected = ModalRoute.of(context)!.settings.arguments as int;
+    print(idConnected);
+    fetchMessages(idConnected);
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: appBar('Messages'),

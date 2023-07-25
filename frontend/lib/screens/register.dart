@@ -14,33 +14,39 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-Future<Null> createPerson(nickname, mail, password) async {
-  Map<String, dynamic> body = {
-    'nickname': nickname,
-    'mail': mail,
-    'password': password
-  };
-  String jsonString = jsonEncode(body); // encode map to json
-  final response =
-      await http.post(Uri.parse('http://127.0.0.1:8000/persons/create'),
-          headers: <String, String>{
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          },
-          body: jsonString);
-
-  if (response.statusCode == 201) {
-    print('Person ' + nickname + ' is created');
-  } else {
-    throw Exception('Failed to create person');
-  }
-}
-
 class _RegisterState extends State<Register> {
+  int idConnected = 0;
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirm = TextEditingController();
   TextEditingController nicknameController = TextEditingController();
+
+  Future<Null> createPerson(nickname, mail, password) async {
+    Map<String, dynamic> body = {
+      'nickname': nickname,
+      'mail': mail,
+      'password': password
+    };
+    String jsonString = jsonEncode(body); // encode map to json
+    final response =
+        await http.post(Uri.parse('http://127.0.0.1:8000/persons/create'),
+            headers: <String, String>{
+              'Content-Type':
+                  'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: jsonString);
+
+    if (response.statusCode == 201) {
+      print('Person ' + nickname + ' is created');
+      var idConnected = jsonDecode(response.body)['id'];
+      setState(() {
+        idConnected = idConnected;
+      });
+    } else {
+      throw Exception('Failed to create person');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
