@@ -128,7 +128,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MessageScreen()),
+                                builder: (context) => const MessageScreen()),
                           );
                         },
                         style: elevatedButtonStyle(),
@@ -200,7 +200,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30))),
-            tabs: <Widget>[
+            tabs: const <Widget>[
               Tab(
                   child: Column(
                 children: <Widget>[

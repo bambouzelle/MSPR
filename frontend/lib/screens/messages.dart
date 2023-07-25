@@ -1,29 +1,27 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:convert' as cnv;
 
 import '../styles/styles.dart';
 
 class Message {
   String message;
-  int id_plant;
-  int id_roser;
-  String date_envoie;
+  int idPlant;
+  int idRoser;
+  String dateEnvoie;
 
   Message(
       {required this.message,
-      required this.id_plant,
-      required this.id_roser,
-      required this.date_envoie});
+      required this.idPlant,
+      required this.idRoser,
+      required this.dateEnvoie});
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       message: json['message'],
-      id_plant: json['id_plant'],
-      id_roser: json['id_roser'],
-      date_envoie: json['date_envoie'],
+      idPlant: json['id_plant'],
+      idRoser: json['id_roser'],
+      dateEnvoie: json['date_envoie'],
     );
   }
 }
@@ -46,7 +44,10 @@ class PersonName {
 }
 
 class MessageScreen extends StatefulWidget {
+  const MessageScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MessageScreenState createState() => _MessageScreenState();
 }
 
@@ -70,7 +71,7 @@ class _MessageScreenState extends State<MessageScreen> {
           data.map((element) => Message.fromJson(element)).toList();
       Map<int, String> listeNoms = {};
       for (var i = 0; i < fetchedMessages.length; i++) {
-        String nickname = await getPersonName(fetchedMessages[i].id_roser);
+        String nickname = await getPersonName(fetchedMessages[i].idRoser);
         listeNoms[i] = nickname;
       }
       setState(() {
@@ -126,7 +127,8 @@ class MessageDetailScreen extends StatelessWidget {
   final Message message;
   final String name;
 
-  MessageDetailScreen({required this.message, required this.name});
+  const MessageDetailScreen(
+      {super.key, required this.message, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -134,20 +136,20 @@ class MessageDetailScreen extends StatelessWidget {
         backgroundColor: primaryColor,
         appBar: appBar('Détails du message'),
         body: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 'Expéditeur: $name',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 'Sujet: ${message.message}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -157,7 +159,7 @@ class MessageDetailScreen extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     title: 'Messagerie',
     home: MessageScreen(),
   ));

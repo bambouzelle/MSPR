@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:frontend/main.dart';
 import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/styles/styles.dart';
 import 'login.dart';
@@ -14,7 +13,7 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-Future<Null> createPerson(nickname, mail, password) async {
+Future<void> createPerson(nickname, mail, password) async {
   Map<String, dynamic> body = {
     'nickname': nickname,
     'mail': mail,
@@ -29,7 +28,8 @@ Future<Null> createPerson(nickname, mail, password) async {
           body: jsonString);
 
   if (response.statusCode == 201) {
-    print('Person ' + nickname + ' is created');
+    // ignore: avoid_print, prefer_interpolation_to_compose_strings
+    print('${'Person ' + nickname} is created');
   } else {
     throw Exception('Failed to create person');
   }
