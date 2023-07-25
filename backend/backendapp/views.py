@@ -125,21 +125,21 @@ def delete_plant(request, id):
 def get_all_messages(request):
     messages = Message.objects.all()
     serializer = MessageSerializer(messages, many=True)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data,safe=False)
 
 @api_view(['GET'])
 def get_message_by_id(request, id):
-    message = get_object_or_404(Message, id=id)
-    serializer = MessageSerializer(message)
-    return Response(serializer.data)
+    message = Message.objects.filter(id_roser_id=id)
+    serializer = MessageSerializer(message, many=True)
+    return JsonResponse(serializer.data,safe=False)
 
 @api_view(['POST'])
 def create_message(request):
     serializer = MessageSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
 
 @api_view(['PUT'])
 def update_message(request, id):
@@ -147,8 +147,8 @@ def update_message(request, id):
     serializer = MessageSerializer(message, data=request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=400)
+        return JsonResponse(serializer.data)
+    return JsonResponse(serializer.errors, status=400)
 
 @api_view(['DELETE'])
 def delete_message(request, id):

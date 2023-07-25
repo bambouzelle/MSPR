@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'dart:convert' as cnv;
+
+import '../styles/styles.dart';
 
 class Message {
   String message;
-  String id_plant;
-  String id_roser;
+  int id_plant;
+  int id_roser;
   String date_envoie;
 
   Message(
@@ -24,6 +28,23 @@ class Message {
   }
 }
 
+class PersonName {
+  int id;
+  String name;
+
+  PersonName({
+    required this.id,
+    required this.name,
+  });
+
+  factory PersonName.fromJson(Map<String, dynamic> json) {
+    return PersonName(
+      id: json['id'],
+      name: json['nickname'],
+    );
+  }
+}
+
 class MessageScreen extends StatefulWidget {
   @override
   _MessageScreenState createState() => _MessageScreenState();
@@ -31,6 +52,7 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   List<Message> messages = [];
+  Map<int, String> personsNames = {};
 
   @override
   void initState() {
@@ -39,23 +61,45 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   Future<void> fetchMessages() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/message'));
+    final response =
+        await http.get(Uri.parse('http://127.0.0.1:8000/message/1'));
     if (response.statusCode == 200) {
+      //print(response.body);
       List<dynamic> data = json.decode(response.body);
       List<Message> fetchedMessages =
-          data.map((json) => Message.fromJson(json)).toList();
+          data.map((element) => Message.fromJson(element)).toList();
+      Map<int, String> listeNoms = {};
+      for (var i = 0; i < fetchedMessages.length; i++) {
+        String nickname = await getPersonName(fetchedMessages[i].id_roser);
+        listeNoms[i] = nickname;
+      }
       setState(() {
         messages = fetchedMessages;
+        personsNames = listeNoms;
       });
     } else {
       // Gérer l'erreur
     }
   }
 
+  Future<String> getPersonName(id) async {
+    final response = await http
+        .get(Uri.parse('http://127.0.0.1:8000/persons/${id.toString()}'));
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      //print(data);
+      PersonName person = PersonName.fromJson(data);
+      return person.name;
+    } else {
+      return ('${id.toString()} not find');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Messages')),
+        backgroundColor: primaryColor,
+        appBar: appBar('Messages'),
         body: ListView.builder(
             itemCount: messages.length,
             itemBuilder: (context, index) {
@@ -65,13 +109,14 @@ class _MessageScreenState extends State<MessageScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          MessageDetailScreen(message: message),
+                      builder: (context) => MessageDetailScreen(
+                          message: message,
+                          name: personsNames[index] ?? 'no name found'),
                     ),
                   );
                 },
-                leading: Text(message.id_roser),
-                title: Text(message.message[0]),
+                leading: Text(personsNames[index] ?? 'no name found'),
+                title: Text(message.message),
               );
             }));
   }
@@ -79,19 +124,21 @@ class _MessageScreenState extends State<MessageScreen> {
 
 class MessageDetailScreen extends StatelessWidget {
   final Message message;
+  final String name;
 
-  MessageDetailScreen({required this.message});
+  MessageDetailScreen({required this.message, required this.name});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Détails du message')),
+        backgroundColor: primaryColor,
+        appBar: appBar('Détails du message'),
         body: Padding(
             padding: EdgeInsets.all(16.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                'Expéditeur: ${message.id_roser}',
+                'Expéditeur: $name',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,

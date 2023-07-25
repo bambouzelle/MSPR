@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/styles/styles.dart';
 import 'login.dart';
@@ -10,11 +14,33 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
+Future<Null> createPerson(nickname, mail, password) async {
+  Map<String, dynamic> body = {
+    'nickname': nickname,
+    'mail': mail,
+    'password': password
+  };
+  String jsonString = jsonEncode(body); // encode map to json
+  final response =
+      await http.post(Uri.parse('http://127.0.0.1:8000/persons/create'),
+          headers: <String, String>{
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          },
+          body: jsonString);
+
+  if (response.statusCode == 201) {
+    print('Person ' + nickname + ' is created');
+  } else {
+    throw Exception('Failed to create person');
+  }
+}
+
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirm = TextEditingController();
+  TextEditingController nicknameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +54,21 @@ class _RegisterState extends State<Register> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextFormField(
+                  controller: nicknameController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: "Nickname"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nickname non saisis';
+                    }
+                    return null;
+                  },
+                ),
+              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -97,13 +138,17 @@ class _RegisterState extends State<Register> {
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MyStatefulWidget()),
-                        );
+                        createPerson(nicknameController.text,
+                                emailController.text, passwordController.text)
+                            .then((result) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyStatefulWidget()));
+                        });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
