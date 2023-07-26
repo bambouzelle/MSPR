@@ -30,19 +30,16 @@ class _RegisterState extends State<Register> {
     };
     String jsonString = jsonEncode(body); // encode map to json
     final response =
-        await http.post(Uri.parse('http://127.0.0.1:8000/persons/create'),
+        await http.post(Uri.parse('http://127.0.0.1:8000/persons/create/'),
             headers: <String, String>{
-              'Content-Type':
-                  'application/x-www-form-urlencoded; charset=UTF-8',
+              'Content-Type': 'application/json',
             },
             body: jsonString);
 
     if (response.statusCode == 201) {
       print('Person ' + nickname + ' is created');
       var idConnected = jsonDecode(response.body)['id'];
-      setState(() {
-        idConnected = idConnected;
-      });
+      this.idConnected = idConnected;
     } else {
       throw Exception('Failed to create person');
     }
@@ -152,8 +149,9 @@ class _RegisterState extends State<Register> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MyStatefulWidget()));
+                                builder: (context) => const MyStatefulWidget(),
+                                settings: RouteSettings(arguments: idConnected),
+                              ));
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(

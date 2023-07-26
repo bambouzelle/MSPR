@@ -72,12 +72,10 @@ class _MessageScreenState extends State<MessageScreen> {
         String nickname = await getPersonName(fetchedMessages[i].id_roser);
         listeNoms[i] = nickname;
       }
-      setState(() {
-        messages = fetchedMessages;
-        personsNames = listeNoms;
-      });
+      messages = fetchedMessages;
+      personsNames = listeNoms;
     } else {
-      // Gérer l'erreur
+      print('error');
     }
   }
 
@@ -97,30 +95,37 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     int idConnected = ModalRoute.of(context)!.settings.arguments as int;
+    print("dans messages");
     print(idConnected);
     fetchMessages(idConnected);
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: appBar('Messages'),
-        body: ListView.builder(
-            itemCount: messages.length,
-            itemBuilder: (context, index) {
-              Message message = messages[index];
-              return ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MessageDetailScreen(
-                          message: message,
-                          name: personsNames[index] ?? 'no name found'),
-                    ),
+        body: messages.isNotEmpty
+            ? ListView.builder(
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  Message message = messages[index];
+                  return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MessageDetailScreen(
+                              message: message,
+                              name: personsNames[index] ?? 'no name found'),
+                        ),
+                      );
+                    },
+                    leading: Text(personsNames[index] ?? 'no name found'),
+                    title: Text(message.message),
                   );
-                },
-                leading: Text(personsNames[index] ?? 'no name found'),
-                title: Text(message.message),
-              );
-            }));
+                })
+            : const Text(
+                "Pas de messages !",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ));
   }
 }
 

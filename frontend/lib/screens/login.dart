@@ -32,10 +32,8 @@ class _LoginState extends State<Login> {
     if (response.statusCode == 200) {
       print('You are connected');
       var idConnected = jsonDecode(response.body)['id'];
+      print("dans login");
       print(idConnected);
-      setState(() {
-        idConnected = idConnected;
-      });
       this.idConnected = idConnected;
       return true;
     } else {
