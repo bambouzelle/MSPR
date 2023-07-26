@@ -33,10 +33,11 @@ class _LoginState extends State<Login> {
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Email :"),
+                      border: OutlineInputBorder(),
+                      labelText: "Entrez votre adresse mail"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Email non saisis !';
+                      return 'Adresse mail vide';
                     }
                     return null;
                   },
@@ -50,10 +51,10 @@ class _LoginState extends State<Login> {
                   obscureText: true,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: "Mot de passe :"),
+                      labelText: "Entrez votre mot de passe"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Mot de passe non saisis';
+                      return 'Mot de passe vide';
                     }
                     return null;
                   },
