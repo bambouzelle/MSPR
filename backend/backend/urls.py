@@ -22,7 +22,7 @@ from backendapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     ##path('account/', include('django.contrib.auth.urls')),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', views.login, name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('model/', views.get_plant_family, name='get_plant_family'),
     path('persons/', views.get_all_persons, name='get_all_persons'),

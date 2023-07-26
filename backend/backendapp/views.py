@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import Person,Plant,Message,Plant_reservation,Reservation,Person_salt
 from rest_framework.decorators import api_view
-from .serializers import PersonSerializer,PlantSerializer,MessageSerializer,PlantReservationSerializer,ReservationSerializer
+from .serializers import PersonSaltSerializer,PersonSerializer,PlantSerializer,MessageSerializer,PlantReservationSerializer,ReservationSerializer
 from backendapp.apps import BackendappConfig
 import json
 
@@ -27,26 +27,20 @@ def get_person_by_name(request, name):
 
 @api_view(['POST'])
 def create_person(request):
-    salt = BackendappConfig.get_salt();
+    salt = BackendappConfig.get_salt()
     password = BackendappConfig.encode_password(request.data["password"], salt)
     request.data["password"] = password
     serializer = PersonSerializer(data=request.data)
-    print(serializer)
     if serializer.is_valid():
         serializer.save()
-        p = Person.objects.get(nickname=request.data["nickname"], mail=request.data["mail"], password=password )
-        pId = p.get_id()
-        print(pId)
-        personSalt = Person_salt()
-        print(personSalt)
-        personSaltSerializer = personSaltSerializer()
-        print(personSaltSerializer)
+        p = Person.objects.filter(mail=request.data["mail"])[0]
+        pId = p.id
+        PSdata = {'person_id' : pId,'salt': salt}
+        personSaltSerializer = PersonSaltSerializer(data=PSdata)
         if personSaltSerializer.is_valid():
-            print(personSaltSerializer)
             personSaltSerializer.save()
+            return JsonResponse(serializer.data, status=201)
         else: print("pb")
-        
-        return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
 
 @api_view(['PUT'])
@@ -58,14 +52,26 @@ def update_person(request, id):
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
 
-@api_view(['GET'])
+@api_view(['POST'])
 def login(request):
-    encodedPassword = BackendappConfig.encode_password(request.data["password"], salt)
-    person = Person.objects.get(mail=request.data["mail"], password=encodedPassword)
+    print('login')
+    print(request.data)
+    person = Person.objects.filter(mail=request.data["mail"])[0]
+    print(person)
     if (person.nickname != ""):
-        response = HttpResponse('authentified')
-        response.set_cookie('cookie', 'MY COOKIE VALUE')
-        return response
+        print('personne retrouvée')
+        print(person.id)
+        salt = Person_salt.objects.filter(person_id=person.id)[0]
+        print(salt.salt)
+        encodedPassword = BackendappConfig.encode_password(request.data["password"], salt.salt)
+        print(encodedPassword)
+        print(person.password)
+        if(person.password == encodedPassword):
+            print('good password')
+            #response = HttpResponse('authentified')
+            #response.set_cookie('cookie', 'MY COOKIE VALUE')
+            return JsonResponse({"authentified" : True, 'id':person.id}, status=200)
+        return JsonResponse({"authentified" : False}, status=403)
 
 @api_view(['DELETE'])
 def delete_person(request, id):

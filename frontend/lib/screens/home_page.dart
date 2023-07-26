@@ -37,6 +37,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
 
   @override
   Widget build(BuildContext context) {
+    int idConnected = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: appBar("A'rosa-je"),
@@ -126,10 +127,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MessageScreen()),
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MessageScreen(),
+                                  settings:
+                                      RouteSettings(arguments: idConnected)));
                         },
                         style: elevatedButtonStyle(),
                         child: const Text('Mes messages'),
