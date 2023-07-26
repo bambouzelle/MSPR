@@ -200,7 +200,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30))),
-            tabs: const <Widget>[
+            tabs: <Widget>[
               Tab(
                   child: Column(
                 children: <Widget>[

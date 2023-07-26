@@ -27,6 +27,7 @@ urlpatterns = [
     path('model/', views.get_plant_family, name='get_plant_family'),
     path('persons/', views.get_all_persons, name='get_all_persons'),
     path('persons/<int:id>/', views.get_person_by_id, name='get_person_by_id'),
+    path('persons/<str:name>/', views.get_person_by_name, name='get_person_by_name'),
     path('persons/create/', views.create_person, name='create_person'),
     path('persons/update/<int:id>/', views.update_person, name='update_person'),
     path('persons/delete/<int:id>/', views.delete_person, name='delete_person'),

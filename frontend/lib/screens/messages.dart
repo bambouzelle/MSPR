@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -126,6 +127,7 @@ class _MessageScreenState extends State<MessageScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => const SendMessageScreen(),
+              settings: RouteSettings(arguments: personsNames),
             ),
           );
         },
@@ -190,17 +192,63 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
     super.dispose();
   }
 
-  Future<void> _createMessage() async {
+  Future<int> getPersonId(name) async {
+    final response = await http
+        .get(Uri.parse('http://127.0.0.1:8000/persons/${name.toString()}'));
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      //print(data);
+      PersonName person = PersonName.fromJson(data);
+      return person.id;
+    } else {
+      return (0);
+    }
+  }
+
+  Future<void> _createMessage(Map<int, String> personsNames) async {
     String message = _messageController.text.trim();
     String user = _userController.text.trim();
+    int receiverId = 0;
 
     if (message.isEmpty || user.isEmpty) {
       return;
+    } else {
+      DateTime now = DateTime.now().toLocal();
+      print(now);
+      if (personsNames.isEmpty) {
+        receiverId = getPersonId(user) as int;
+      } else {
+        receiverId = personsNames.keys.firstWhere(
+            (name) => personsNames[name] == user,
+            orElse: () => getPersonId(user) as int);
+      }
+      print(receiverId);
+      Map<String, dynamic> body = {
+        'message': message,
+        'date_envoie': now,
+        'id_plant': '',
+        'id_roser': receiverId,
+      };
+      String jsonString = jsonEncode(body); // encode map to json
+      final response =
+          await http.post(Uri.parse('http://127.0.0.1:8000/persons/create'),
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+              },
+              body: jsonString);
+
+      if (response.statusCode == 200) {
+        print('Message envoyé');
+      } else {
+        throw Exception('Failed to create person');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Map<int, String> personsNames =
+        ModalRoute.of(context)!.settings.arguments as Map<int, String>;
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: appBar('Envoyer un message'),
@@ -221,7 +269,7 @@ class _SendMessageScreenState extends State<SendMessageScreen> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: _createMessage,
+              onPressed: _createMessage(personsNames),
               child: const Text('Envoyer'),
             ),
           ],
