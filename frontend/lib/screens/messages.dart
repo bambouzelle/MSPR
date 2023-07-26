@@ -1,29 +1,28 @@
 import 'dart:convert';
-import 'dart:html';
+import 'dart:ffi';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:convert' as cnv;
 
 import '../styles/styles.dart';
 
 class Message {
   String message;
-  int id_plant;
-  int id_roser;
-  String date_envoie;
+  int idPlant;
+  int idRoser;
+  String dateEnvoie;
 
   Message(
       {required this.message,
-      required this.id_plant,
-      required this.id_roser,
-      required this.date_envoie});
+      required this.idPlant,
+      required this.idRoser,
+      required this.dateEnvoie});
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       message: json['message'],
-      id_plant: json['id_plant'],
-      id_roser: json['id_roser'],
-      date_envoie: json['date_envoie'],
+      idPlant: json['id_plant'],
+      idRoser: json['id_roser'],
+      dateEnvoie: json['date_envoie'],
     );
   }
 }
@@ -46,7 +45,10 @@ class PersonName {
 }
 
 class MessageScreen extends StatefulWidget {
+  const MessageScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MessageScreenState createState() => _MessageScreenState();
 }
 
@@ -69,7 +71,7 @@ class _MessageScreenState extends State<MessageScreen> {
           data.map((element) => Message.fromJson(element)).toList();
       Map<int, String> listeNoms = {};
       for (var i = 0; i < fetchedMessages.length; i++) {
-        String nickname = await getPersonName(fetchedMessages[i].id_roser);
+        String nickname = await getPersonName(fetchedMessages[i].idRoser);
         listeNoms[i] = nickname;
       }
       messages = fetchedMessages;
@@ -99,33 +101,41 @@ class _MessageScreenState extends State<MessageScreen> {
     print(idConnected);
     fetchMessages(idConnected);
     return Scaffold(
-        backgroundColor: primaryColor,
-        appBar: appBar('Messages'),
-        body: messages.isNotEmpty
-            ? ListView.builder(
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  Message message = messages[index];
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MessageDetailScreen(
-                              message: message,
-                              name: personsNames[index] ?? 'no name found'),
-                        ),
-                      );
-                    },
-                    leading: Text(personsNames[index] ?? 'no name found'),
-                    title: Text(message.message),
-                  );
-                })
-            : const Text(
-                "Pas de messages !",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ));
+      backgroundColor: primaryColor,
+      appBar: appBar('Messages'),
+      body: ListView.builder(
+          itemCount: messages.length,
+          itemBuilder: (context, index) {
+            Message message = messages[index];
+            return ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MessageDetailScreen(
+                        message: message,
+                        name: personsNames[index] ?? 'no name found'),
+                  ),
+                );
+              },
+              leading: Text(personsNames[index] ?? 'no name found'),
+              title: Text(message.message),
+            );
+          }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SendMessageScreen(),
+              settings: RouteSettings(arguments: personsNames),
+            ),
+          );
+        },
+        backgroundColor: secondaryColor,
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
 
@@ -133,7 +143,8 @@ class MessageDetailScreen extends StatelessWidget {
   final Message message;
   final String name;
 
-  MessageDetailScreen({required this.message, required this.name});
+  const MessageDetailScreen(
+      {super.key, required this.message, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -141,20 +152,20 @@ class MessageDetailScreen extends StatelessWidget {
         backgroundColor: primaryColor,
         appBar: appBar('Détails du message'),
         body: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 'Expéditeur: $name',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 'Sujet: ${message.message}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -163,143 +174,115 @@ class MessageDetailScreen extends StatelessWidget {
   }
 }
 
+class SendMessageScreen extends StatefulWidget {
+  const SendMessageScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _SendMessageScreenState createState() => _SendMessageScreenState();
+}
+
+class _SendMessageScreenState extends State<SendMessageScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    _userController.dispose();
+    super.dispose();
+  }
+
+  Future<int> getPersonId(name) async {
+    final response = await http
+        .get(Uri.parse('http://127.0.0.1:8000/persons/${name.toString()}'));
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      //print(data);
+      PersonName person = PersonName.fromJson(data);
+      return person.id;
+    } else {
+      return (0);
+    }
+  }
+
+  Future<void> _createMessage(Map<int, String> personsNames) async {
+    String message = _messageController.text.trim();
+    String user = _userController.text.trim();
+    int receiverId = 0;
+
+    if (message.isEmpty || user.isEmpty) {
+      return;
+    } else {
+      DateTime now = DateTime.now().toLocal();
+      print(now);
+      if (personsNames.isEmpty) {
+        receiverId = getPersonId(user) as int;
+      } else {
+        receiverId = personsNames.keys.firstWhere(
+            (name) => personsNames[name] == user,
+            orElse: () => getPersonId(user) as int);
+      }
+      print(receiverId);
+      Map<String, dynamic> body = {
+        'message': message,
+        'date_envoie': now,
+        'id_plant': '',
+        'id_roser': receiverId,
+      };
+      String jsonString = jsonEncode(body); // encode map to json
+      final response =
+          await http.post(Uri.parse('http://127.0.0.1:8000/persons/create'),
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+              },
+              body: jsonString);
+
+      if (response.statusCode == 200) {
+        print('Message envoyé');
+      } else {
+        throw Exception('Failed to create person');
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Map<int, String> personsNames =
+        ModalRoute.of(context)!.settings.arguments as Map<int, String>;
+    return Scaffold(
+      backgroundColor: primaryColor,
+      appBar: appBar('Envoyer un message'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              controller: _messageController,
+              decoration:
+                  const InputDecoration(labelText: 'Contenu du message'),
+            ),
+            TextFormField(
+              controller: _userController,
+              decoration:
+                  const InputDecoration(labelText: 'Utilisateur destinataire'),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _createMessage(personsNames),
+              child: const Text('Envoyer'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     title: 'Messagerie',
     home: MessageScreen(),
   ));
 }
-// class MyStatefulWidget extends StatefulWidget {
-//   const MyStatefulWidget({Key? key}) : super(key: key);
-
-//   @override
-//   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-// }
-
-// class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MyMessages();
-//   }
-// }
-
-// class MyMessages extends StatefulWidget {
-//   const MyMessages({Key? key}) : super(key: key);
-
-//   @override
-//   // ignore: library_private_types_in_public_api
-//   _MyMessagesState createState() => _MyMessagesState();
-// }
-
-// class _MyMessagesState extends State<MyMessages>
-//     with SingleTickerProviderStateMixin {
-//   late Future<List> futurePlant;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     futureMessages = fetchMessages();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: primaryColor,
-//       appBar: appBar("Mes Messages"),
-//       body: Container(
-//         decoration: const BoxDecoration(
-//           color: primaryColor,
-//         ),
-//         child: Center(
-//           child: FutureBuilder<List<Plant>>(
-//               future: futurePlant as Future<List<Plant>>,
-//               builder: (context, snapshot) {
-//                 if (snapshot.hasData) {
-//                   return Column(
-//                     children: [
-//                       Expanded(
-//                         child: ListView.builder(
-//                           itemCount: snapshot.data!.length,
-//                           itemBuilder: (_, index) => ListTile(
-//                             title: Text(snapshot.data![index].name),
-//                             subtitle: Text(snapshot.data![index].description),
-//                             onTap: () {
-//                               Navigator.push(
-//                                 context,
-//                                 MaterialPageRoute(
-//                                   builder: (context) => PlantDetailPage(
-//                                       plant: snapshot.data![index]),
-//                                 ),
-//                               );
-//                             },
-//                           ),
-//                         ),
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.symmetric(vertical: 16.0),
-//                         child: ElevatedButton(
-//                           onPressed: () {
-//                             Navigator.push(
-//                               context,
-//                               MaterialPageRoute(
-//                                   builder: (context) =>
-//                                       const CreatePlantPage()),
-//                             );
-//                           },
-//                           style: elevatedButtonStyle(),
-//                           child: const Text('Ajouter une plante'),
-//                         ),
-//                       ),
-//                       const SizedBox(height: 30),
-//                     ],
-//                   );
-//                 } else if (snapshot.hasError) {
-//                   return Text("${snapshot.error}");
-//                 }
-//                 return const CircularProgressIndicator();
-//               }),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class PlantDetailPage extends StatelessWidget {
-//   final Plant plant;
-
-//   const PlantDetailPage({Key? key, required this.plant}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: primaryColor,
-//       appBar: appBar('Détails de la plante'),
-//       body: Center(
-//         child: Column(children: [
-//           const SizedBox(height: 16.0),
-//           Text(
-//             plant.name,
-//             style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-//           ),
-//           const SizedBox(height: 16.0),
-//           Text(
-//             plant.description,
-//             style: const TextStyle(fontSize: 18.0),
-//           ),
-//           const SizedBox(height: 50.0),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 16.0),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 deletePlant(plant.id);
-//               },
-//               style: elevatedButtonStyle(),
-//               child: const Text('Supprimer la plante'),
-//             ),
-//           ),
-//           const SizedBox(height: 30),
-//         ]),
-//       ),
-//     );
-//   }
-// }

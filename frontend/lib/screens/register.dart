@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:frontend/main.dart';
 import 'package:frontend/screens/home_page.dart';
 import 'package:frontend/styles/styles.dart';
 import 'login.dart';

@@ -100,7 +100,6 @@ class BackendappConfig(AppConfig):
             predictions = BackendappConfig.sickness_detector_model.predict(img)
             score = tf.nn.softmax(predictions[0])
             return [BackendappConfig.PLANT_NAMES[int(np.argmax(score))],  float(100 * np.max(score))]
-        
     
     def encode_password(raw_password, salt):
         """Encode le password avant enregistrement en base

@@ -19,6 +19,12 @@ def get_person_by_id(request, id):
     serializer = PersonSerializer(person)
     return JsonResponse(serializer.data)
 
+@api_view(['GET'])
+def get_person_by_name(request, name):
+    person = get_object_or_404(Person, nickname=name)
+    serializer = PersonSerializer(person)
+    return JsonResponse(serializer.data)
+
 @api_view(['POST'])
 def create_person(request):
     salt = BackendappConfig.get_salt()
