@@ -66,7 +66,7 @@ class _MessageScreenState extends State<MessageScreen> {
     final response =
         await http.get(Uri.parse('http://127.0.0.1:8000/message/$id'));
     if (response.statusCode == 200) {
-      //print(response.body);
+      print(response.body);
       List<dynamic> data = json.decode(response.body);
       List<Message> fetchedMessages =
           data.map((element) => Message.fromJson(element)).toList();

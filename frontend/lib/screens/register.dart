@@ -27,12 +27,11 @@ class _RegisterState extends State<Register> {
       'mail': mail,
       'password': password
     };
-    String jsonString = jsonEncode(body); // encode map to json
+    String jsonString = jsonEncode(body);
     final response =
         await http.post(Uri.parse('http://127.0.0.1:8000/persons/create/'),
             headers: <String, String>{
-              'Accept': 'application/json',
-              "Content-Type": "application/x-www-form-urlencoded"
+              'Content-Type': 'application/json',
             },
             body: jsonString);
 
