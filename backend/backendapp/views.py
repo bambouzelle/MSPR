@@ -28,16 +28,23 @@ def get_person_by_name(request, name):
 @api_view(['POST'])
 def create_person(request):
     salt = BackendappConfig.get_salt()
+    print(salt)
     password = BackendappConfig.encode_password(request.data["password"], salt)
+    print(password)
     request.data["password"] = password
     serializer = PersonSerializer(data=request.data)
     if serializer.is_valid():
+        print(serializer.data)
         serializer.save()
+        print('ok save')
         p = Person.objects.filter(mail=request.data["mail"])[0]
+        print(p)
         pId = p.id
+        print(pId)
         PSdata = {'person_id' : pId,'salt': salt}
         personSaltSerializer = PersonSaltSerializer(data=PSdata)
         if personSaltSerializer.is_valid():
+            print(personSaltSerializer.data)
             personSaltSerializer.save()
             return JsonResponse(serializer.data, status=201)
         else: print("pb")
@@ -95,6 +102,15 @@ def get_plant_by_id(request, id):
     serializer = PlantSerializer(plant)
     return JsonResponse(serializer.data)
 
+@api_view(['GET'])
+def get_plant_by_ownerId(request, id):
+    print('getting plantes')
+    plant = Plant.objects.filter(owner_id=id)
+    print(plant)
+    serializer = PlantSerializer(plant, many=True)
+    print(serializer.data)
+    return JsonResponse(serializer.data,safe=False, status=200)
+
 @api_view(['POST'])
 def create_plant(request):
     print(request)
@@ -147,9 +163,12 @@ def get_message_by_id(request, id):
 
 @api_view(['POST'])
 def create_message(request):
+    print('creating message')
     serializer = MessageSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
-        serializer.save()
+        print('serializer valid')
+        #serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
 

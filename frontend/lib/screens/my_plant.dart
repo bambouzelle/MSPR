@@ -32,11 +32,14 @@ class _MyPlantsState extends State<MyPlants>
   @override
   void initState() {
     super.initState();
-    futurePlant = fetchPlant();
   }
 
   @override
   Widget build(BuildContext context) {
+    int idConnected = ModalRoute.of(context)!.settings.arguments as int;
+    print('dans plant');
+    print(idConnected);
+    futurePlant = fetchPlant(idConnected);
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: appBar("Mes plantes"),

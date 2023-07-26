@@ -74,17 +74,18 @@ class Annonces {
   }
 }
 
-Future<List<Plant>> fetchPlant() async {
-  final response = await http.get(Uri.parse('http://127.0.0.1:8000/plant/'));
+Future<List<Plant>> fetchPlant(int id) async {
+  final response =
+      await http.get(Uri.parse('http://127.0.0.1:8000/plant/owner/$id/'));
 
   if (response.statusCode == 200) {
     List<Plant> listPlant = [];
-    for (var i = 0; i < jsonDecode(response.body).length; i++) {
+    for (var i = 0; i < (jsonDecode(response.body) as List).length; i++) {
       listPlant.add(Plant.fromJson(jsonDecode(response.body)[i]));
     }
     return listPlant;
   } else {
-    throw Exception('Failed to load Reservations');
+    throw Exception('Failed to load Plantes');
   }
 }
 

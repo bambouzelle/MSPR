@@ -31,14 +31,14 @@ class _RegisterState extends State<Register> {
     final response =
         await http.post(Uri.parse('http://127.0.0.1:8000/persons/create/'),
             headers: <String, String>{
-              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              "Content-Type": "application/x-www-form-urlencoded"
             },
             body: jsonString);
 
     if (response.statusCode == 201) {
       print('Person ' + nickname + ' is created');
-      var idConnected = jsonDecode(response.body)['id'];
-      this.idConnected = idConnected;
+      idConnected = jsonDecode(response.body)['id'];
     } else {
       throw Exception('Failed to create person');
     }
