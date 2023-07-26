@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from .models import Person,Plant,Message,Plant_reservation,Reservation,Person_salt
+from .models import Person, Plant, Message, Plant_reservation, Reservation, Person_salt
 from rest_framework.decorators import api_view
-from .serializers import PersonSaltSerializer,PersonSerializer,PlantSerializer,MessageSerializer,PlantReservationSerializer,ReservationSerializer
+from .serializers import PersonSaltSerializer, PersonSerializer, PlantSerializer, MessageSerializer, PlantReservationSerializer, ReservationSerializer
 from backendapp.apps import BackendappConfig
 import json
+
 
 @api_view(['GET'])
 def get_all_persons(request):
@@ -13,11 +14,13 @@ def get_all_persons(request):
     serializer = PersonSerializer(persons, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+
 @api_view(['GET'])
 def get_person_by_id(request, id):
     person = get_object_or_404(Person, id=id)
     serializer = PersonSerializer(person)
     return JsonResponse(serializer.data)
+
 
 @api_view(['GET'])
 def get_person_by_name(request, name):
@@ -25,30 +28,33 @@ def get_person_by_name(request, name):
     serializer = PersonSerializer(person)
     return JsonResponse(serializer.data)
 
+
 @api_view(['POST'])
 def create_person(request):
     salt = BackendappConfig.get_salt()
-    print(salt)
     password = BackendappConfig.encode_password(request.data["password"], salt)
-    print(password)
     request.data["password"] = password
+    print(request.data)
     serializer = PersonSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid():
-        print(serializer.data)
+        print('serializer valide')
         serializer.save()
         print('ok save')
         p = Person.objects.filter(mail=request.data["mail"])[0]
         print(p)
         pId = p.id
         print(pId)
-        PSdata = {'person_id' : pId,'salt': salt}
+        PSdata = {'person_id': pId, 'salt': salt}
         personSaltSerializer = PersonSaltSerializer(data=PSdata)
         if personSaltSerializer.is_valid():
-            print(personSaltSerializer.data)
+            print("personSaltSerializer  valide")
             personSaltSerializer.save()
             return JsonResponse(serializer.data, status=201)
-        else: print("pb")
+        else:
+            print("pb")
     return JsonResponse(serializer.errors, status=400)
+
 
 @api_view(['PUT'])
 def update_person(request, id):
@@ -58,6 +64,7 @@ def update_person(request, id):
         serializer.save()
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
+
 
 @api_view(['POST'])
 def login(request):
@@ -70,15 +77,17 @@ def login(request):
         print(person.id)
         salt = Person_salt.objects.filter(person_id=person.id)[0]
         print(salt.salt)
-        encodedPassword = BackendappConfig.encode_password(request.data["password"], salt.salt)
+        encodedPassword = BackendappConfig.encode_password(
+            request.data["password"], salt.salt)
         print(encodedPassword)
         print(person.password)
-        if(person.password == encodedPassword):
+        if (person.password == encodedPassword):
             print('good password')
-            #response = HttpResponse('authentified')
-            #response.set_cookie('cookie', 'MY COOKIE VALUE')
-            return JsonResponse({"authentified" : True, 'id':person.id}, status=200)
-        return JsonResponse({"authentified" : False}, status=403)
+            # response = HttpResponse('authentified')
+            # response.set_cookie('cookie', 'MY COOKIE VALUE')
+            return JsonResponse({"authentified": True, 'id': person.id}, status=200)
+        return JsonResponse({"authentified": False}, status=403)
+
 
 @api_view(['DELETE'])
 def delete_person(request, id):
@@ -96,11 +105,13 @@ def get_all_plants(request):
     serializer = PlantSerializer(plants, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+
 @api_view(['GET'])
 def get_plant_by_id(request, id):
     plant = get_object_or_404(Plant, id=id)
     serializer = PlantSerializer(plant)
     return JsonResponse(serializer.data)
+
 
 @api_view(['GET'])
 def get_plant_by_ownerId(request, id):
@@ -109,23 +120,25 @@ def get_plant_by_ownerId(request, id):
     print(plant)
     serializer = PlantSerializer(plant, many=True)
     print(serializer.data)
-    return JsonResponse(serializer.data,safe=False, status=200)
+    return JsonResponse(serializer.data, safe=False, status=200)
+
 
 @api_view(['POST'])
 def create_plant(request):
     print(request)
     try:
         image_blob = request.data['picture']
-        BackendappConfig.decode_image(image_blob)    
+        BackendappConfig.decode_image(image_blob)
         predictions = BackendappConfig.prediction_plant("image.png")
         request.data["name"] = str(predictions[0])
-    except(Exception(e)):
+    except (Exception(e)):
         print(e)
     serializer = PlantSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
+
 
 @api_view(['PUT'])
 def update_plant(request, id):
@@ -140,6 +153,7 @@ def update_plant(request, id):
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['DELETE'])
 def delete_plant(request, id):
     try:
@@ -149,17 +163,20 @@ def delete_plant(request, id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
 @api_view(['GET'])
 def get_all_messages(request):
     messages = Message.objects.all()
     serializer = MessageSerializer(messages, many=True)
-    return JsonResponse(serializer.data,safe=False)
+    return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(['GET'])
 def get_message_by_id(request, id):
     message = Message.objects.filter(id_roser_id=id)
     serializer = MessageSerializer(message, many=True)
-    return JsonResponse(serializer.data,safe=False)
+    return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(['POST'])
 def create_message(request):
@@ -168,9 +185,10 @@ def create_message(request):
     print(serializer)
     if serializer.is_valid():
         print('serializer valid')
-        #serializer.save()
+        serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
+
 
 @api_view(['PUT'])
 def update_message(request, id):
@@ -181,6 +199,7 @@ def update_message(request, id):
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
 
+
 @api_view(['DELETE'])
 def delete_message(request, id):
     try:
@@ -190,17 +209,20 @@ def delete_message(request, id):
     except Exception as e:
         return Response({'error': str(e)}, status=500)
 
+
 @api_view(['GET'])
 def get_all_reservations(request):
     reservations = Reservation.objects.all()
     serializer = ReservationSerializer(reservations, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+
 @api_view(['GET'])
 def get_reservation_by_id(request, id):
     reservation = get_object_or_404(Reservation, id=id)
     serializer = ReservationSerializer(reservation)
     return JsonResponse(serializer.data)
+
 
 @api_view(['POST'])
 def create_reservation(request):
@@ -209,6 +231,7 @@ def create_reservation(request):
         serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
+
 
 @api_view(['PUT'])
 def update_reservation(request, id):
@@ -219,17 +242,20 @@ def update_reservation(request, id):
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
 
+
 @api_view(['GET'])
 def get_all_plant_reservations(request):
     plant_reservations = Plant_reservation.objects.all()
     serializer = PlantReservationSerializer(plant_reservations, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+
 @api_view(['GET'])
 def get_plant_reservation_by_id(request, id):
     plant_reservation = get_object_or_404(Plant_reservation, id=id)
     serializer = PlantReservationSerializer(plant_reservation)
     return JsonResponse(serializer.data)
+
 
 @api_view(['POST'])
 def create_plant_reservation(request):
@@ -239,24 +265,27 @@ def create_plant_reservation(request):
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
 
+
 @api_view(['PUT'])
 def update_plant_reservation(request, id):
     plant_reservation = get_object_or_404(Plant_reservation, id=id)
-    serializer = PlantReservationSerializer(plant_reservation, data=request.data)
+    serializer = PlantReservationSerializer(
+        plant_reservation, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data)
     return JsonResponse(serializer.errors, status=400)
 
+
 @api_view(['GET'])
 def get_plant_family(request):
     if request.method == 'GET':
-        
+
         # sentence is the query we want to get the prediction for
-        params =  request.GET.get('image')
-        
+        params = request.GET.get('image')
+
         # predict method used to get the prediction
         prediction = BackendappConfig.prediction_plant(params)
-        
+
         # returning JSON response
         return JsonResponse(prediction, safe=False)
