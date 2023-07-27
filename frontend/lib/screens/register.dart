@@ -27,7 +27,7 @@ class _RegisterState extends State<Register> {
       'mail': mail,
       'password': password
     };
-    String jsonString = jsonEncode(body); // encode map to json
+    String jsonString = jsonEncode(body);
     final response =
         await http.post(Uri.parse('http://127.0.0.1:8000/persons/create/'),
             headers: <String, String>{
@@ -37,8 +37,7 @@ class _RegisterState extends State<Register> {
 
     if (response.statusCode == 201) {
       print('Person ' + nickname + ' is created');
-      var idConnected = jsonDecode(response.body)['id'];
-      this.idConnected = idConnected;
+      idConnected = jsonDecode(response.body)['id'];
     } else {
       throw Exception('Failed to create person');
     }

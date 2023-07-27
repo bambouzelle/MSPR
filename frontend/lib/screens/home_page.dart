@@ -129,7 +129,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MessageScreen(),
+                                  builder: (context) => const MessageScreen(),
                                   settings:
                                       RouteSettings(arguments: idConnected)));
                         },
@@ -140,10 +140,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MyPlants()),
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MyPlants(),
+                                  settings:
+                                      RouteSettings(arguments: idConnected)));
                         },
                         style: elevatedButtonStyle(),
                         child: const Text('Mes plantes'),

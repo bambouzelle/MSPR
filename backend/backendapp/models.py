@@ -18,7 +18,7 @@ class Plant(models.Model):
     description = models.CharField(max_length=255)
     picture = models.TextField()
     sharing = models.BooleanField()
-    owner = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='plants')
+    owner_id = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='plants')
 
     class Meta:
         app_label = 'backendapp'
