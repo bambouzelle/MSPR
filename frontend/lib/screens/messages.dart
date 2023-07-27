@@ -100,28 +100,40 @@ class _MessageScreenState extends State<MessageScreen> {
     int idConnected = ModalRoute.of(context)!.settings.arguments as int;
     print("dans messages");
     print(idConnected);
-    fetchMessages(idConnected);
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: appBar('Messages'),
-      body: ListView.builder(
-          itemCount: messages.length,
-          itemBuilder: (context, index) {
-            Message message = messages[index];
-            return ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MessageDetailScreen(
-                        message: message,
-                        name: personsNames[index] ?? 'no name found'),
-                  ),
-                );
-              },
-              leading: Text(personsNames[index] ?? 'no name found'),
-              title: Text(message.message),
-            );
+      body: FutureBuilder<void>(
+          future: fetchMessages(idConnected),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Display a loading indicator while fetching messages
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Handle error if the fetchMessages function encounters an error
+              return Text('Error fetching messages');
+            } else {
+              // Display the ListView once the data is available
+              return ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    Message message = messages[index];
+                    return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MessageDetailScreen(
+                                message: message,
+                                name: personsNames[index] ?? 'no name found'),
+                          ),
+                        );
+                      },
+                      leading: Text(personsNames[index] ?? 'no name found'),
+                      title: Text(message.message),
+                    );
+                  });
+            }
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

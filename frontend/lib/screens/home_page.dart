@@ -129,7 +129,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MessageScreen(),
+                                  builder: (context) => const MessageScreen(),
                                   settings:
                                       RouteSettings(arguments: idConnected)));
                         },
